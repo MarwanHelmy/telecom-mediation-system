@@ -1,26 +1,40 @@
-# Telecom Mediation System
-A centralized mediation engine routing CSV CDRs from Upstream nodes to Downstream nodes.
-# 📡 SMSC Node (SFTP) – Mediation System
+# 💳 Billing Node - SFTP CDR Processing Service (DOWNSTREAM)
 
 ## 📌 Overview
-
-The SMSC (Short Message Service Center) node simulates a telecom network element that generates CDR (Call Detail Record) files and exposes them via **SFTP** for the mediation system to collect.
-
----
+Billing Node is responsible for receiving CDR files from SMSC and simulating charging / rating logic in telecom systems.
 
 ## ⚙️ Configuration
 
-| Property         | Value                  | Description                         |
-| ---------------- | ---------------------- | ----------------------------------- |
-| Node Name        | SMSC                   | Short Message Service Center        |
-| Protocol         | SFTP                   | Secure File Transfer Protocol       |
-| Docker Image     | atmoz/sftp             | Lightweight SFTP server             |
-| Container Name   | smsc-sftp              | Docker container name               |
-| Host             | 127.0.0.1              | Localhost                           |
-| Port             | 2222                   | Exposed SFTP port                   |
-| Username         | smsc_node              | Login username                      |
-| Password         | 12345                  | Login password                      |
-| Remote Directory | /home/smsc_node/upload | CDR files location inside container |
-| Local Directory  | ./smsc-node/upload     | Mounted folder on host              |
+| Item              | Value              | Description |
+|------------------|-------------------|-------------|
+| Service Name     | billing-node      | Docker Billing SFTP Node |
+| Protocol         | SFTP (SSH)        | Secure File Transfer Protocol |
+| Port             | 2223              | Exposed SSH/SFTP port |
+| Username         | billing           | Login user |
+| Password         | bill123           | Default password (dev only) |
+| Incoming Folder  | /home/billing/incoming  | Received CDR files |
+| Processed Folder | /home/billing/processed | After processing |
+| Base Image       | Ubuntu 22.04      | Docker base OS |
+| Container Name   | billing-node      | Docker container name |
 
+## 🚀 Run Billing Node
+
+docker build -t billing-node .
+
+docker run -d --name billing-node -p 2223:22 -v $(pwd)/data:/home/billing billing-node
+
+docker ps
+
+## 🔌 Connect Billing Node
+
+sftp -P 2223 billing@localhost
+
+Username: billing  
+Password: bill123
+
+## 📂 Billing Structure
+
+/home/billing
+├── incoming
+└── processed
 
