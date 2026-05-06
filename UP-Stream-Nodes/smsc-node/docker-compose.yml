@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  smsc-node:
+    build: .
+    container_name: smsc-node
+    ports:
+      - "2222:22"
+    volumes:
+      - ./data:/home/smsc
+    restart: always
