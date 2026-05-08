@@ -1,24 +1,39 @@
 #!/bin/bash
 FTP_DIR="/home/msc_user/ftp/cdrs"
 
+# Define the pool of 20 allowed phone numbers
+TARGET_NUMBERS=(
+    "201098765432" "201123456789" "201234567890" "201543210987" "201011223344"
+    "201122334455" "201233445566" "201544556677" "201055667788" "201166778899"
+    "201277889900" "201588990011" "201099001122" "201100112233" "201211223344"
+    "201522334455" "201033445566" "201144556677" "201255667788" "201566778899"
+)
+
 while true; do
     TIMESTAMP=$(date +"%Y%m%d%H%M%S")
     FILENAME="MSC_CDR_${TIMESTAMP}.csv"
     
-    # Generate random duration between 0 and 299
-    DURATION=$((RANDOM % 300)) 
+    # Pick a random index between 0 and 19 to select a number from the array
+    INDEX=$((RANDOM % 20))
+    CALLED_PARTY=${TARGET_NUMBERS[$INDEX]}
     
-    # Randomly generate normal numbers or short codes to test Java filtering
-    if [ $((RANDOM % 5)) -eq 0 ]; then
-        CALLED_PARTY="999"  # Short code
-    else
-        CALLED_PARTY="2010$((RANDOM % 90000000 + 10000000))" # Normal Egyptian number format
-    fi
+    # Default normal duration (1 to 300 seconds)
+    DURATION=$((RANDOM % 300 + 1)) 
     
-    # Randomly force a zero duration to test Java filtering
-    if [ $((RANDOM % 5)) -eq 0 ]; then
-        DURATION=0
-    fi
+    # Randomly apply fraud scenarios (roughly a 20% chance to be an anomaly)
+    SCENARIO=$((RANDOM % 10))
+    
+    case $SCENARIO in
+        1)
+            # Scenario A: Zero duration (dropped/free call)
+            DURATION=0
+            ;;
+        2)
+            # Scenario B: Massive duration (over 1 hour)
+            # 3600 seconds = 1 hour. This generates a random time between 1 and 2 hours.
+            DURATION=$((RANDOM % 3600 + 3600))
+            ;;
+    esac
     
     # Format: RecordType, CallingParty, CalledParty, Duration, Timestamp
     echo "1,201012345678,$CALLED_PARTY,$DURATION,$TIMESTAMP" > "$FTP_DIR/$FILENAME"
@@ -30,4 +45,3 @@ while true; do
     
     sleep 10
 done
-

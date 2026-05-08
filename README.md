@@ -2,6 +2,7 @@
 # Telecom Mediation System - Docker Network Setup Guide
 
 ## Overview
+
 The project contains:
 
 | Node         | Purpose                   | IP          |
@@ -44,6 +45,11 @@ telecom-mediation-system/
         ├── sshd_config
         └── data/
 ```
+
+---
+
+
+
 Create Shared Docker Network
 
 Create the telecom shared network:
@@ -68,7 +74,6 @@ docker network inspect telecom-network
 ```
 
 ---
-
 MSC Node Configuration
 
 ## File: `UP-Stream-Nodes/msc-node/docker-compose.yml`
@@ -93,7 +98,7 @@ networks:
 ```
 
 ---
- SMSC Node Configuration
+SMSC Node Configuration
 
 ## File: `UP-Stream-Nodes/smsc-node/docker-compose.yml`
 
@@ -121,7 +126,6 @@ networks:
 ```
 
 ---
-
 Billing Node Configuration
 
 ## File: `DOWN-Stream-Nodes/billing-system/docker-compose.yml`
@@ -150,12 +154,110 @@ networks:
 ```
 
 ---
- Build and Start Containers
+Build and Start Containers
 
 ## Start MSC Node
 
 ```bash
 cd telecom-mediation-system/UP-Stream-Nodes/msc-node
+
+docker compose up -d --build
+```
+
+---
+
+## Start SMSC Node
+
+```bash
+cd ../smsc-node
+
+docker compose up -d --build
+```
+
+---
+
+## Start Billing Node
+
+```bash
+cd ../../DOWN-Stream-Nodes/billing-system
+
+docker compose up -d --build
+```
+
+---
+Verify Running Containers
+
+```bash
+docker ps
+```
+
+Expected containers:
+
+```text
+msc_node
+smsc-node
+billing-node
+```
+
+---
+Check Container IPs
+
+## MSC Node
+
+```bash
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' msc_node
+```
+
+Expected:
+
+```text
+172.30.0.10
+```
+
+---
+
+## SMSC Node
+
+```bash
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' smsc-node
+```
+
+Expected:
+
+```text
+172.30.0.30
+```
+
+---
+
+## Billing Node
+
+```bash
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' billing-node
+```
+
+Expected:
+
+```text
+172.30.0.40
+```
+
+---
+Inspect Network Implementation
+
+```bash
+docker network inspect telecom-network
+```
+
+This shows:
+
+* Connected containers
+* IP addresses
+* Gateway
+* Subnet
+* Docker bridge information
+
+---
 
 docker compose up -d --build
 ```
