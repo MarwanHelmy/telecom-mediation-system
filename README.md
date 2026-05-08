@@ -105,28 +105,6 @@ networks:
 ```
 
 ---
-PGW Node Configuration
-
-## File: `UP-Stream-Nodes/pgw-node/docker-compose.yml`
-
-```yaml
-services:
-  pgw_node:
-    build: .
-    container_name: pgw_node
-    ports:
-      - "2323:2323"
-      - "21011-21021:21011-21021"
-    networks:
-      telecom-network:
-        ipv4_address: 172.30.0.50
-
-networks:
-  telecom-network:
-    external: true
-```
-
----
 SMSC Node Configuration
 
 ## File: `UP-Stream-Nodes/smsc-node/docker-compose.yml`
@@ -148,6 +126,28 @@ services:
     networks:
       telecom-network:
         ipv4_address: 172.30.0.30
+
+networks:
+  telecom-network:
+    external: true
+```
+
+---
+PGW Node Configuration
+
+## File: `UP-Stream-Nodes/pgw-node/docker-compose.yml`
+
+```yaml
+services:
+  pgw_node:
+    build: .
+    container_name: pgw_node
+    ports:
+      - "2323:2323"
+      - "21011-21021:21011-21021"
+    networks:
+      telecom-network:
+        ipv4_address: 172.30.0.50
 
 networks:
   telecom-network:
@@ -195,20 +195,20 @@ docker compose up -d --build
 
 ---
 
-## Start PGW Node
+## Start SMSC Node
 
 ```bash
-cd telecom-mediation-system/UP-Stream-Nodes/pgw-node
+cd ../smsc-node
 
 docker compose up -d --build
 ```
 
 ---
 
-## Start SMSC Node
+## Start PGW Node
 
 ```bash
-cd ../smsc-node
+cd telecom-mediation-system/UP-Stream-Nodes/pgw-node
 
 docker compose up -d --build
 ```
@@ -242,20 +242,6 @@ billing-node
 ---
 Check Container IPs
 
-## PGW Node
-
-```bash
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pgw_node
-```
-
-Expected:
-
-```text
-172.30.0.50
-```
-
----
-
 ## MSC Node
 
 ```bash
@@ -280,6 +266,20 @@ Expected:
 
 ```text
 172.30.0.30
+```
+
+---
+
+## PGW Node
+
+```bash
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pgw_node
+```
+
+Expected:
+
+```text
+172.30.0.50
 ```
 
 ---
@@ -310,30 +310,5 @@ This shows:
 * Gateway
 * Subnet
 * Docker bridge information
-
----
-
-docker compose up -d --build
-```
-
----
-
-## Start SMSC Node
-
-```bash
-cd ../smsc-node
-
-docker compose up -d --build
-```
-
----
-
-## Start Billing Node
-
-```bash
-cd ../../DOWN-Stream-Nodes/billing-system
-
-docker compose up -d --build
-```
 
 ---
