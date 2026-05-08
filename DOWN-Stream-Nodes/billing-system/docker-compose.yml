@@ -1,19 +1,19 @@
 services:
-  smsc-node:
+  billing-node:
     build: .
-    container_name: smsc-node
+    container_name: billing-node
 
     ports:
-      - "2222:22"
+      - "2223:22"
 
     volumes:
-      - ./data:/home/smsc
+      - ./data:/home/billing
 
     restart: always
 
     networks:
       telecom-network:
-        ipv4_address: 172.30.0.30
+        ipv4_address: 172.30.0.40
 
 networks:
   telecom-network:
