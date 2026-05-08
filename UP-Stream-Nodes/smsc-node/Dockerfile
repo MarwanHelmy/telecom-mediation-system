@@ -10,7 +10,7 @@ RUN useradd -m -d /home/smsc -s /bin/bash smsc && \
     echo "smsc:smsc123" | chpasswd
 
 # Create directories
-RUN mkdir -p /home/smsc/cdr /home/smsc/archive && \
+RUN mkdir -p /home/smsc/cdrs /home/smsc/archive && \
     chown -R smsc:smsc /home/smsc
 
 # SSH setup

@@ -1,104 +1,118 @@
 package Main_PK;
 
 import NODE_PK.NODE;
-import NODE_PK.NODE_PROTOCOL;
-import NODE_PK.NODE_TYPE;
+import NODE_PK.NODES_UP_STREAM;
 
 import java.io.File;
 
-public class MediationSystem {
+public class MediationSystem 
+{
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
+        NODE[] nodes = NODES_UP_STREAM.GET_NODES();
 
-        NODE mscNode = new NODE(
-                1,
-                "MSC_NODE",
-                "172.30.0.10",
-                21,
-                "msc_user",
-                "pass123",
-                NODE_PROTOCOL.FTP,
-                NODE_TYPE.UPSTREAM,
-                "/home/msc_user/ftp/cdrs",
-                "archive"
-        );
+        while (true) 
+        {
 
-        NODE smscNode = new NODE(
-                2,
-                "SMSC_NODE",
-                "172.30.0.30",
-                22,
-                "smsc",
-                "smsc123",
-                NODE_PROTOCOL.SFTP,
-                NODE_TYPE.UPSTREAM,
-                "cdr",
-                "archive"
-        );
+            try 
+            {
 
-        NODE pgwNode = new NODE(
-                3,
-                "PGW_NODE",
-                "172.30.0.50",
-                2323,
-                "pgw_user",
-                "pass789",
-                NODE_PROTOCOL.FTP,
-                NODE_TYPE.UPSTREAM,
-                "/home/msc_user/ftp/cdrs",
-                "archive"
-        );
-
-        NODE[] nodes = {mscNode, smscNode, pgwNode};
-
-        while (true) {
-
-            try {
-
-                System.out.println("\n=====================================");
-                System.out.println("START MEDIATION CYCLE");
-                System.out.println("=====================================");
+                System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
+                System.out.println("[MEDIATION ⚙️ ]  START MEDIATION CYCLE 🔄");
+                System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
 
                 for (NODE node : nodes) {
 
-                    System.out.println("\nNODE : " + node.getNODE_NAME());
+                    System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
+                    System.out.println("[NODE      📡 ] [" + node.getNODE_NAME() + "]");
+                    System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
 
-                    if (!node.connect()) continue;
-                    if (!node.open_channel()) { node.disconnect(); continue; }
-                    if (!node.change_directory()) { node.disconnect(); continue; }
+                    // CONNECT
+                    if (!node.connect()) {
+                        System.out.println("CONNECT FAILED");
+                        continue;
+                    }
 
-                    String[] files = node.list_cdr_files();
-
-                    if (files == null || files.length == 0) {
-                        System.out.println("NO FILES");
+                    // OPEN CHANNEL
+                    if (!node.open_channel()) {
+                        System.out.println("CHANNEL FAILED");
                         node.disconnect();
                         continue;
                     }
 
-                    for (String file : files) {
-
-                        System.out.println("FILE : " + file);
-
-                        File downloaded = node.download_file(file);
-
-                        if (downloaded == null) {
-                            System.out.println("DOWNLOAD FAILED");
-                            continue;
-                        }
-
-                        System.out.println("FILTER OK : " + file);
-                        System.out.println("READY TO SEND : " + file);
-
-                        node.archive_file(file);
+                    // CHANGE DIRECTORY
+                    if (!node.change_directory()) {
+                        System.out.println("DIRECTORY FAILED");
+                        node.disconnect();
+                        continue;
                     }
 
+                    // LIST FILES
+                    String[] files = node.list_cdr_files();
+
+                    if (files == null || files.length == 0) {
+                        System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
+                        System.out.println("[NODE      📡 ] [" + node.getNODE_NAME() + "] NO CDR FILES FOUND  ❌📄");
+                        System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
+
+                        node.disconnect();
+                        continue;
+                    }
+                    System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
+                    System.out.println("[NODE      📡 ] [" + node.getNODE_NAME() + "] TOTAL CDR FILES : " + files.length + "  🔢");
+                    System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
+
+                    //====================================================
+                    // PROCESS FILES
+                    //====================================================
+                    System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
+                    for (String file : files) 
+                    {
+                        System.out.println("[NODE      📡 ] [" + node.getNODE_NAME() + "] GET FILE : " + file + "  ⚡📄");
+                        System.out.println("-------------------------------------------------------------------------------------------");
+                        // DOWNLOAD
+                        File downloadedFile = node.download_file(file);
+
+                        if (downloadedFile == null) {
+
+                            System.out.println("DOWNLOAD FAILED : " + file);
+                            continue;
+                        }
+                        
+                        System.out.println("[MEDIATION ⚙️  ] DOWNLOAD ' " + file + " ' FILE SUCCESS  ✅📥");
+                        System.out.println("-------------------------------------------------------------------------------------------");
+
+                        // MEDIATION FILTER
+
+                        // SEND TO DOWNSTREAM
+
+                        // ARCHIVE FILE AT MEDIATION
+                
+                        // ARCHIVE FILE AT NODE
+                       
+                        boolean archived = node.archive_file(file);
+
+                        if (archived) 
+                        {
+                            System.out.println("[NODE      📡 ] [" + node.getNODE_NAME() + "] FILE :  ' " + file + " '  ARCHIVE SUCCESS ➡️  🗄️  ✅");
+                            System.out.println("-------------------------------------------------------------------------------------------"); 
+                        } 
+                        else 
+                        {
+                            System.out.println("ARCHIVE FAILED");
+                        }
+                    }
+
+                    // DISCONNECT
                     node.disconnect();
                 }
+                System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
+                Thread.sleep(5000);
 
-                System.out.println("\nWAITING 10 SECONDS...");
-                Thread.sleep(10000);
-
-            } catch (Exception ex) {
+            } 
+            catch (Exception ex) 
+            {
                 System.out.println("MAIN ERROR : " + ex.getMessage());
             }
         }
