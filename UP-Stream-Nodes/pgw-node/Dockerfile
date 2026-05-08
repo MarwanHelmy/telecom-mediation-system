@@ -22,6 +22,7 @@ RUN echo "local_enable=YES" >> /etc/vsftpd/vsftpd.conf && \
 
 # Setup the FTP directory
 RUN mkdir -p /home/pgw_user/ftp/cdrs && \
+    mkdir -p /home/pgw_user/ftp/archive && \
     chown -R pgw_user:pgw_user /home/pgw_user/ftp
 
 # Copy scripts and make them executable

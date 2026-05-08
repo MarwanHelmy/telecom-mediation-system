@@ -21,7 +21,8 @@ RUN echo "local_enable=YES" >> /etc/vsftpd/vsftpd.conf && \
     echo "pasv_address=172.30.0.10" >> /etc/vsftpd/vsftpd.conf
 
 # Setup the FTP directory (THIS IS THE CHANGED PART)
-RUN mkdir -p /home/msc_user/ftp/cdrs/archive && \
+RUN mkdir -p /home/msc_user/ftp/cdrs && \
+    mkdir -p /home/msc_user/ftp/archive && \
     chown -R msc_user:msc_user /home/msc_user/ftp
 
 # Copy scripts and make them executable

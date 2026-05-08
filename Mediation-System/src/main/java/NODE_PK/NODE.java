@@ -7,7 +7,6 @@ import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -32,7 +31,8 @@ public class NODE {
     public NODE(int NODE_ID, String NODE_NAME, String NODE_IP, int NODE_PORT,
                 String NODE_USER_NAME, String NODE_PASSWORD,
                 NODE_PROTOCOL NODE_PROTOCOL, NODE_TYPE NODE_TYPE,
-                String SOURCE_DIRECTORY, String ARCHIVE_DIRECTORY) {
+                String SOURCE_DIRECTORY, String ARCHIVE_DIRECTORY) 
+    {
 
         this.NODE_ID = NODE_ID;
         this.NODE_NAME = NODE_NAME;
@@ -66,8 +66,6 @@ public class NODE {
                     session.setPassword(NODE_PASSWORD);
                     session.setConfig("StrictHostKeyChecking", "no");
                     session.connect();
-
-                    System.out.println("Connected To NODE : " + NODE_NAME);
                     break;
 
                 case FTP:
@@ -82,14 +80,14 @@ public class NODE {
 
                     ftpClient.enterLocalPassiveMode();
                     ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-
-                    System.out.println("Connected To NODE : " + NODE_NAME);
                     break;
             }
 
             return true;
 
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             System.out.println("Connection Failed : " + ex.getMessage());
             return false;
         }
@@ -106,9 +104,9 @@ public class NODE {
                 channel.connect();
                 sftp = (ChannelSftp) channel;
 
-                System.out.println("SFTP Channel Opened");
+//                System.out.println("SFTP Channel Opened");
             } else {
-                System.out.println("FTP Connection Ready");
+//                System.out.println("FTP Connection Ready");
             }
 
             return true;
@@ -119,22 +117,22 @@ public class NODE {
         }
     }
 
+
     //====================================================
     // CHANGE DIRECTORY
     //====================================================
     public boolean change_directory() {
-        try {
-            switch (NODE_PROTOCOL) {
+        try 
+        {
+            switch (NODE_PROTOCOL) 
+            {
 
                 case SFTP:
 
                     sftp.cd(SOURCE_DIRECTORY);
-                    System.out.println("SFTP Dir : " + sftp.pwd());
                     break;
 
                 case FTP:
-
-                    System.out.println("FTP Before : " + ftpClient.printWorkingDirectory());
 
                     boolean ok = ftpClient.changeWorkingDirectory(SOURCE_DIRECTORY);
 
@@ -142,14 +140,14 @@ public class NODE {
                         System.out.println("FTP directory not found, fallback /");
                         ftpClient.changeWorkingDirectory("/");
                     }
-
-                    System.out.println("FTP After : " + ftpClient.printWorkingDirectory());
                     break;
             }
 
             return true;
 
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             System.out.println("Directory Change Failed : " + ex.getMessage());
             return false;
         }
@@ -158,11 +156,14 @@ public class NODE {
     //====================================================
     // LIST FILES
     //====================================================
-    public String[] list_cdr_files() {
-        try {
+    public String[] list_cdr_files() 
+    {
+        try 
+        {
             ArrayList<String> filesList = new ArrayList<>();
 
-            switch (NODE_PROTOCOL) {
+            switch (NODE_PROTOCOL) 
+            {
 
                 case SFTP:
 
@@ -189,7 +190,9 @@ public class NODE {
 
             return filesList.toArray(new String[0]);
 
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             System.out.println("List Files Failed : " + ex.getMessage());
             return null;
         }
@@ -198,8 +201,10 @@ public class NODE {
     //====================================================
     // DOWNLOAD FILE
     //====================================================
-    public File download_file(String fileName) {
-        try {
+    public File download_file(String fileName) 
+    {
+        try 
+        {
 
             File dir = new File("collection-cdr/new-cdr/" + NODE_NAME);
             if (!dir.exists()) dir.mkdirs();
@@ -223,11 +228,11 @@ public class NODE {
                     if (!ok) return null;
                     break;
             }
-
-            System.out.println("Downloaded : " + fileName);
             return localFile;
 
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             System.out.println("Download Failed : " + ex.getMessage());
             return null;
         }
@@ -237,26 +242,40 @@ public class NODE {
     // ARCHIVE FILE
     //====================================================
     public boolean archive_file(String fileName) {
-        try {
 
-            String src = fileName;
-            String dest = ARCHIVE_DIRECTORY + "/" + fileName;
+        try {
 
             switch (NODE_PROTOCOL) {
 
                 case SFTP:
-                    sftp.rename(src, dest);
+
+                    String sftpDest = "../archive/" + fileName;
+
+                    sftp.rename(fileName, sftpDest);
                     break;
 
                 case FTP:
-                    ftpClient.rename(src, dest);
+
+                    String ftpDest = "../archive/" + fileName;
+
+                    boolean moved = ftpClient.rename(fileName, ftpDest);
+
+                    if (!moved) {
+
+                        System.out.println("FTP MOVE FAILED");
+                        System.out.println("REPLY : " + ftpClient.getReplyString());
+
+                        return false;
+                    }
+
                     break;
             }
-
-            System.out.println("Archived : " + fileName);
             return true;
 
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
+
             System.out.println("Archive Failed : " + ex.getMessage());
             return false;
         }
@@ -276,9 +295,9 @@ public class NODE {
                 ftpClient.disconnect();
             }
 
-            System.out.println("Disconnected : " + NODE_NAME);
-
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex)
+        {
             System.out.println("Disconnect Failed : " + ex.getMessage());
         }
     }
