@@ -18,10 +18,10 @@ RUN echo "local_enable=YES" >> /etc/vsftpd/vsftpd.conf && \
     echo "pasv_min_port=21100" >> /etc/vsftpd/vsftpd.conf && \
     echo "pasv_max_port=21110" >> /etc/vsftpd/vsftpd.conf && \
     echo "listen_port=21" >> /etc/vsftpd/vsftpd.conf && \
-    echo "pasv_address=127.0.0.1" >> /etc/vsftpd/vsftpd.conf
+    echo "pasv_address=172.30.0.10" >> /etc/vsftpd/vsftpd.conf
 
-# Setup the FTP directory
-RUN mkdir -p /home/msc_user/ftp/cdrs && \
+# Setup the FTP directory (THIS IS THE CHANGED PART)
+RUN mkdir -p /home/msc_user/ftp/cdrs/archive && \
     chown -R msc_user:msc_user /home/msc_user/ftp
 
 # Copy scripts and make them executable
@@ -33,4 +33,3 @@ RUN chmod +x /usr/local/bin/msc-generator.sh /usr/local/bin/entrypoint.sh
 EXPOSE 21 21100-21110
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
