@@ -313,3 +313,27 @@ This shows:
 
 ---
 
+docker compose up -d --build
+```
+
+---
+
+## Start SMSC Node
+
+```bash
+cd ../smsc-node
+
+docker compose up -d --build
+```
+
+---
+
+## Start Billing Node
+
+```bash
+cd ../../DOWN-Stream-Nodes/billing-system
+
+docker compose up -d --build
+```
+
+---

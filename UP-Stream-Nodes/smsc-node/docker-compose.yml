@@ -1,0 +1,20 @@
+services:
+  smsc-node:
+    build: .
+    container_name: smsc-node
+
+    ports:
+      - "2222:22"
+
+    volumes:
+      - ./data:/home/smsc
+
+    restart: always
+
+    networks:
+      telecom-network:
+        ipv4_address: 172.30.0.30
+
+networks:
+  telecom-network:
+    external: true
