@@ -5,11 +5,12 @@
 
 The project contains:
 
-| Node         | Purpose                   | IP          |
-| ------------ | ------------------------- | ----------- |
-| MSC Node     | Generates CDRs using FTP  | 172.30.0.10 |
-| SMSC Node    | SFTP upstream node        | 172.30.0.30 |
-| Billing Node | Downstream billing system | 172.30.0.40 |
+| Node         | Purpose                                    | IP          |
+| ------------ | ------------------------------------------ | ----------- |
+| MSC Node     | Generates call CDRs using FTP              | 172.30.0.10 |
+| SMSC Node    | SFTP upstream node                         | 172.30.0.30 |
+| Billing Node | Downstream billing system                  | 172.30.0.40 |
+| PGW Node     | Generates packet gateway CDRs via FTP      | 172.30.0.50 |
 
 All containers communicate through a shared Docker bridge network:
 
@@ -29,6 +30,12 @@ telecom-mediation-system/
 │   │   ├── docker-compose.yml
 │   │   ├── entrypoint.sh
 │   │   └── msc-generator.sh
+│   │
+│   ├── pgw-node/
+│   │   ├── Dockerfile
+│   │   ├── docker-compose.yml
+│   │   ├── entrypoint.sh
+│   │   └── pgw-generator.sh
 │   │
 │   └── smsc-node/
 │       ├── Dockerfile
@@ -91,6 +98,28 @@ services:
     networks:
       telecom-network:
         ipv4_address: 172.30.0.10
+
+networks:
+  telecom-network:
+    external: true
+```
+
+---
+PGW Node Configuration
+
+## File: `UP-Stream-Nodes/pgw-node/docker-compose.yml`
+
+```yaml
+services:
+  pgw_node:
+    build: .
+    container_name: pgw_node
+    ports:
+      - "2323:2323"
+      - "21011-21021:21011-21021"
+    networks:
+      telecom-network:
+        ipv4_address: 172.30.0.50
 
 networks:
   telecom-network:
@@ -166,6 +195,16 @@ docker compose up -d --build
 
 ---
 
+## Start PGW Node
+
+```bash
+cd telecom-mediation-system/UP-Stream-Nodes/pgw-node
+
+docker compose up -d --build
+```
+
+---
+
 ## Start SMSC Node
 
 ```bash
@@ -195,12 +234,27 @@ Expected containers:
 
 ```text
 msc_node
+pgw_node
 smsc-node
 billing-node
 ```
 
 ---
 Check Container IPs
+
+## PGW Node
+
+```bash
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pgw_node
+```
+
+Expected:
+
+```text
+172.30.0.50
+```
+
+---
 
 ## MSC Node
 
