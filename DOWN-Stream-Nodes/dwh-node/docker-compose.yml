@@ -1,0 +1,20 @@
+services:
+  dwh-node:
+    build: .
+    container_name: dwh-node
+
+    ports:
+      - "2224:22"
+
+    volumes:
+      - ./data:/home/dwh
+
+    restart: always
+
+    networks:
+      telecom-network:
+        ipv4_address: 172.30.0.60
+
+networks:
+  telecom-network:
+    external: true
