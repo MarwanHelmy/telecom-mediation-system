@@ -7,7 +7,8 @@ services:
       - "2222:22"
 
     volumes:
-      - ./data:/data
+      - ./data/cdrs:/home/smsc/cdrs     
+      - ./data/archive:/home/smsc/archive
 
     networks:
       telecom-network:

@@ -8,7 +8,12 @@ echo "Starting SMSC SFTP Node..."
 chown root:root /home/smsc
 chmod 755 /home/smsc
 
-mkdir -p /home/smsc/cdr /home/smsc/archive
-chown smsc:smsc /home/smsc/cdr /home/smsc/archive
 
+mkdir -p /home/smsc/cdrs /home/smsc/archive
+chown smsc:smsc /home/smsc/cdrs /home/smsc/archive
+
+# Start the SMS generator script in the background
+/usr/local/bin/sms-generator.sh &
+
+# Start SSH daemon in the foreground
 /usr/sbin/sshd -D

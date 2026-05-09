@@ -4,14 +4,16 @@ import com.jcraft.jsch.*;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class NODE {
+public class NODE 
+{
 
+    //============= ATTRIBUTESS =========================
+    
     private int NODE_ID;
     private String NODE_NAME;
     private String NODE_IP;
@@ -20,18 +22,114 @@ public class NODE {
     private String NODE_PASSWORD;
     private NODE_PROTOCOL NODE_PROTOCOL;
     private NODE_TYPE NODE_TYPE;
-
     private String SOURCE_DIRECTORY;
     private String ARCHIVE_DIRECTORY;
+    
+    //============= GETTERS ============================
+    
+    public int getNODE_ID() {
+    return NODE_ID;
+    }
 
+    public String getNODE_NAME() {
+        return NODE_NAME;
+    }
+
+    public String getNODE_IP() {
+        return NODE_IP;
+    }
+
+    public int getNODE_PORT() {
+        return NODE_PORT;
+    }
+
+    public String getNODE_USER_NAME() {
+        return NODE_USER_NAME;
+    }
+
+    public String getNODE_PASSWORD() {
+        return NODE_PASSWORD;
+    }
+
+    public NODE_PROTOCOL getNODE_PROTOCOL() {
+        return NODE_PROTOCOL;
+    }
+
+    public NODE_TYPE getNODE_TYPE() {
+        return NODE_TYPE;
+    }
+
+    public String getSOURCE_DIRECTORY() {
+        return SOURCE_DIRECTORY;
+    }
+
+    public String getARCHIVE_DIRECTORY() {
+        return ARCHIVE_DIRECTORY;
+    }
+    
+     //============= SETTERS ============================
+    
+    public void setNODE_ID(int NODE_ID) {
+    this.NODE_ID = NODE_ID;
+    }
+
+    public void setNODE_NAME(String NODE_NAME) {
+        this.NODE_NAME = NODE_NAME;
+    }
+
+    public void setNODE_IP(String NODE_IP) {
+        this.NODE_IP = NODE_IP;
+    }
+
+    public void setNODE_PORT(int NODE_PORT) {
+        this.NODE_PORT = NODE_PORT;
+    }
+
+    public void setNODE_USER_NAME(String NODE_USER_NAME) {
+        this.NODE_USER_NAME = NODE_USER_NAME;
+    }
+
+    public void setNODE_PASSWORD(String NODE_PASSWORD) {
+        this.NODE_PASSWORD = NODE_PASSWORD;
+    }
+
+    public void setNODE_PROTOCOL(NODE_PROTOCOL NODE_PROTOCOL) {
+        this.NODE_PROTOCOL = NODE_PROTOCOL;
+    }
+
+    public void setNODE_TYPE(NODE_TYPE NODE_TYPE) {
+        this.NODE_TYPE = NODE_TYPE;
+    }
+
+    public void setSOURCE_DIRECTORY(String SOURCE_DIRECTORY) {
+        this.SOURCE_DIRECTORY = SOURCE_DIRECTORY;
+    }
+
+    public void setARCHIVE_DIRECTORY(String ARCHIVE_DIRECTORY) {
+        this.ARCHIVE_DIRECTORY = ARCHIVE_DIRECTORY;
+    }
+    
+    //============= CONNECTION ATTRIBUTESS =====================
+    
     private Session session;
     private ChannelSftp sftp;
     private FTPClient ftpClient;
 
-    public NODE(int NODE_ID, String NODE_NAME, String NODE_IP, int NODE_PORT,
-                String NODE_USER_NAME, String NODE_PASSWORD,
-                NODE_PROTOCOL NODE_PROTOCOL, NODE_TYPE NODE_TYPE,
-                String SOURCE_DIRECTORY, String ARCHIVE_DIRECTORY) 
+    //============= CONSTRUCTORS ===============================
+    
+    public NODE
+    (
+        int NODE_ID, 
+        String NODE_NAME, 
+        String NODE_IP, 
+        int NODE_PORT,
+        String NODE_USER_NAME,
+        String NODE_PASSWORD,
+        NODE_PROTOCOL NODE_PROTOCOL, 
+        NODE_TYPE NODE_TYPE,
+        String SOURCE_DIRECTORY,
+        String ARCHIVE_DIRECTORY
+    ) 
     {
 
         this.NODE_ID = NODE_ID;
@@ -46,20 +144,15 @@ public class NODE {
         this.ARCHIVE_DIRECTORY = ARCHIVE_DIRECTORY;
     }
 
-    public String getNODE_NAME() {
-        return NODE_NAME;
-    }
-
-    //====================================================
-    // CONNECT
-    //====================================================
+    //============= METHODS NODE ============================
+    
+    // CONNECT METHOD
+   
     public boolean connect() {
         try {
             switch (NODE_PROTOCOL) {
 
                 case SFTP:
-                case SCP:
-
                     JSch jsch = new JSch();
 
                     session = jsch.getSession(NODE_USER_NAME, NODE_IP, NODE_PORT);
@@ -93,34 +186,34 @@ public class NODE {
         }
     }
 
-    //====================================================
-    // OPEN CHANNEL
-    //====================================================
+    //═══════════════════════════════════════════════════════════════════════════════════════════
+    
+    // OPEN CHANNEL METHOD
+    
     public boolean open_channel() {
         try {
-            if (NODE_PROTOCOL == NODE_PROTOCOL.SFTP || NODE_PROTOCOL == NODE_PROTOCOL.SCP) {
-
+            if (NODE_PROTOCOL == NODE_PROTOCOL.SFTP) 
+            {
                 Channel channel = session.openChannel("sftp");
                 channel.connect();
                 sftp = (ChannelSftp) channel;
-
-//                System.out.println("SFTP Channel Opened");
-            } else {
-//                System.out.println("FTP Connection Ready");
-            }
-
+            } 
+            
             return true;
 
-        } catch (Exception ex) {
+        } 
+        catch (Exception ex) 
+        {
             System.out.println("Open Channel Failed : " + ex.getMessage());
             return false;
         }
     }
 
-
-    //====================================================
-    // CHANGE DIRECTORY
-    //====================================================
+    
+    //═══════════════════════════════════════════════════════════════════════════════════════════
+    
+    // CHANGE DIRECTORY METHOD
+    
     public boolean change_directory() {
         try 
         {
@@ -153,9 +246,11 @@ public class NODE {
         }
     }
 
-    //====================================================
-    // LIST FILES
-    //====================================================
+    
+    //═══════════════════════════════════════════════════════════════════════════════════════════
+    
+    // LIST FILES METHOD
+   
     public String[] list_cdr_files() 
     {
         try 
@@ -198,9 +293,11 @@ public class NODE {
         }
     }
 
-    //====================================================
-    // DOWNLOAD FILE
-    //====================================================
+    
+    //═══════════════════════════════════════════════════════════════════════════════════════════
+    
+    // DOWNLOAD FILE METHOD
+    
     public File download_file(String fileName) 
     {
         try 
@@ -238,9 +335,11 @@ public class NODE {
         }
     }
 
-    //====================================================
-    // ARCHIVE FILE
-    //====================================================
+   
+    //═══════════════════════════════════════════════════════════════════════════════════════════
+    
+    // ARCHIVE FILE METHOD
+    
     public boolean archive_file(String fileName) {
 
         try {
@@ -248,11 +347,51 @@ public class NODE {
             switch (NODE_PROTOCOL) {
 
                 case SFTP:
-
-                    String sftpDest = "../archive/" + fileName;
-
-                    sftp.rename(fileName, sftpDest);
-                    break;
+                
+                sftp.cd("/");
+                
+                String sourcePath = SOURCE_DIRECTORY + "/" + fileName;
+                String destPath = ARCHIVE_DIRECTORY + "/" + fileName;
+                
+                
+                try 
+                {
+                    sftp.lstat(ARCHIVE_DIRECTORY);
+                } catch (SftpException e) {
+                   
+                    sftp.mkdir(ARCHIVE_DIRECTORY);
+                }
+                
+                // Try the rename
+                try 
+                {
+                    sftp.rename(sourcePath, destPath);
+                   
+                } 
+                catch (SftpException e) 
+                {
+                    try 
+                    {
+                        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                        sftp.get(sourcePath, baos);
+                        
+                        java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(baos.toByteArray());
+                        sftp.put(bais, destPath);
+                        
+                        sftp.rm(sourcePath);
+                        
+                        baos.close();
+                        bais.close();
+                          
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+                
+                sftp.cd(SOURCE_DIRECTORY);
+                break;
 
                 case FTP:
 
@@ -272,20 +411,21 @@ public class NODE {
             }
             return true;
 
-        } 
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
 
             System.out.println("Archive Failed : " + ex.getMessage());
             return false;
         }
     }
-
-    //====================================================
-    // DISCONNECT
-    //====================================================
-    public void disconnect() {
-        try {
+    
+    //═══════════════════════════════════════════════════════════════════════════════════════════
+   
+    // DISCONNECT METHOD
+   
+    public void disconnect()
+    {
+        try 
+        {
 
             if (sftp != null) sftp.disconnect();
             if (session != null) session.disconnect();
