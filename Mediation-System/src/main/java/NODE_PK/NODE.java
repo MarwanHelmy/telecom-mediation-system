@@ -20,6 +20,7 @@ public class NODE
     private int NODE_PORT;
     private String NODE_USER_NAME;
     private String NODE_PASSWORD;
+    private String NODE_AUTH;
     private NODE_PROTOCOL NODE_PROTOCOL;
     private NODE_TYPE NODE_TYPE;
     private String SOURCE_DIRECTORY;
@@ -128,7 +129,8 @@ public class NODE
         NODE_PROTOCOL NODE_PROTOCOL, 
         NODE_TYPE NODE_TYPE,
         String SOURCE_DIRECTORY,
-        String ARCHIVE_DIRECTORY
+        String ARCHIVE_DIRECTORY,
+        String NODE_AUTH
     ) 
     {
 
@@ -142,6 +144,7 @@ public class NODE
         this.NODE_TYPE = NODE_TYPE;
         this.SOURCE_DIRECTORY = SOURCE_DIRECTORY;
         this.ARCHIVE_DIRECTORY = ARCHIVE_DIRECTORY;
+        this.NODE_AUTH = NODE_AUTH;
     }
 
     //============= METHODS NODE ============================

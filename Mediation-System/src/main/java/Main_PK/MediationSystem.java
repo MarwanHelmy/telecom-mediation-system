@@ -4,13 +4,15 @@ import NODE_PK.NODE;
 import NODE_PK.NODES_UP_STREAM;
 
 import java.io.File;
+import java.util.List;
 
 public class MediationSystem 
 {
 
     public static void main(String[] args) 
     {
-        NODE[] nodes = NODES_UP_STREAM.GET_NODES();
+         List<NODE> up_stream_nodes = NODES_UP_STREAM.GET_NODES();
+         
 
         while (true) 
         {
@@ -22,7 +24,7 @@ public class MediationSystem
                 System.out.println("[MEDIATION ⚙️ ]  START MEDIATION CYCLE 🔄");
                 System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
 
-                for (NODE node : nodes) {
+                for (NODE node : up_stream_nodes) {
 
                     System.out.println("═══════════════════════════════════════════════════════════════════════════════════════════");
                     System.out.println("[NODE      📡 ] [" + node.getNODE_NAME() + "]");
@@ -82,13 +84,14 @@ public class MediationSystem
                         
                         System.out.println("[MEDIATION ⚙️  ] DOWNLOAD ' " + file + " ' FILE SUCCESS  ✅📥");
                         System.out.println("-------------------------------------------------------------------------------------------");
-
+                        
+                        
                         // MEDIATION FILTER
-
+                        
                         // SEND TO DOWNSTREAM
-
+                        
                         // ARCHIVE FILE AT MEDIATION
-                
+                            
                         // ARCHIVE FILE AT NODE
                        
                         boolean archived = node.archive_file(file);

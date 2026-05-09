@@ -26,6 +26,10 @@
             <artifactId>jsch</artifactId>
             <version>0.2.16</version>
         </dependency>
-
+        <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.7.3</version>
+    </dependency>
     </dependencies>
 </project>
