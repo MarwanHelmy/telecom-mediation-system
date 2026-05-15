@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+        <title>MediationX | Admin Portal Login</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+        <link rel="stylesheet" href="../CSS/Login.css">
+    </head>
+    <body>
+
+        <!-- Floating Orbs Animation -->
+        <div class="floating-orb" style="width: 300px; height: 300px; top: -100px; left: -100px; animation-duration: 25s;"></div>
+        <div class="floating-orb" style="width: 200px; height: 200px; bottom: 50px; right: 30px; animation-duration: 18s; animation-delay: 2s;"></div>
+        <div class="floating-orb" style="width: 150px; height: 150px; top: 40%; right: 10%; animation-duration: 22s; animation-delay: 5s;"></div>
+        <div class="floating-orb" style="width: 250px; height: 250px; bottom: 20%; left: 5%; animation-duration: 30s; animation-delay: 1s;"></div>
+
+        <div class="login-container">
+            <!-- Header -->
+            <div class="header">
+                <div class="topbar">
+                    <div class="brand">
+                        <div class="logo"><i class="ti ti-wave-sine"></i></div>
+                        <div class="brand-text" style="text-align: center">
+                            <h1>Mediation<span>X</span></h1>
+                            <p>M S Z</p>
+                        </div>
+                    </div>
+                    <div class="status">
+                        <div class="dot"></div>
+                        <span>✨ SYSTEM ONLINE · SECURE CONNECTION</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero -->
+            <div class="hero-section">
+                <div class="badge">
+                    <i class="ti ti-stars"></i> MEDIATION ENGINEER PORTAL
+                </div>
+                <h2>Admin Access<br><span>Control Plane</span></h2>
+            </div>
+
+            <!-- Login Card -->
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="lock-icon">
+                        <i class="ti ti-shield-lock"></i>
+                    </div>
+                    <h3>Mediation Engineer Login</h3>
+                    <p>Authorized personnel only</p>
+                </div>
+
+                <form id="loginForm" action="Dashboard.html" method="POST">
+                    <div class="input-group">
+                        <div class="input-icon">
+                            <i class="ti ti-user"></i>
+                            <input type="text" id="username" name="username" placeholder="Mediation Engineer ID / Username" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-icon">
+                            <i class="ti ti-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Secure Access Key">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <i class="ti ti-sparkles"></i> 
+                        Access Mediation Core
+                        <i class="ti ti-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="error-message" id="errorMsg">
+                    <i class="ti ti-alert-circle"></i>
+                    <span id="errorText">Please fill in all required fields.</span>
+                </div>
+
+                <!-- Link Button to Main Page -->
+                <div class="back-to-main">
+                    <a href="Main.html" class="back-link">
+                        <i class="ti ti-home"></i> Back to Main Page
+                    </a>
+                </div>
+
+                <div class="login-footer">
+                    <a href="#"><i class="ti ti-fingerprint"></i> Secure SSO Authentication</a>
+                    <span style="margin: 0 12px; color: #B8D4E0;">•</span>
+                    <a href="#"><i class="ti ti-help"></i> Need Help?</a>
+                </div>
+            </div>
+        </div>
+
+        <script src="../JS/Login.js"></script>
+    </body>
+</html>

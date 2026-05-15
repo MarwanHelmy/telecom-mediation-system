@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+        <title>MediationX | Rules Management</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="../CSS/Rules.css">
+    </head>
+    <body>
+
+        <div class="floating-orb" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+        <div class="floating-orb" style="width: 200px; height: 200px; bottom: 50px; right: 30px; animation-delay: 2s;"></div>
+        <div class="floating-orb" style="width: 150px; height: 150px; top: 40%; right: 10%; animation-delay: 5s;"></div>
+
+        <div class="rules-container">
+            <div class="rules-header">
+                <div class="brand">
+                    <div class="logo">
+                        <i class="ti ti-wave-sine"></i>
+                    </div>
+                    <h1>Mediation<span>X</span> Rules</h1>
+                </div>
+                <div class="header-actions">
+                    <a class="back-btn" id="backBtn" href="../HTML/Dashboard.html">
+                        <i class="ti ti-arrow-left"></i>
+                        <span>Back to Dashboard</span>
+                    </a>
+                    <button class="add-rule-btn" id="addRuleBtn">
+                        <i class="ti ti-plus"></i>
+                        <span>Add New Rule</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-summary">
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="ti ti-route"></i></div>
+                    <div class="stat-info">
+                        <h3 id="totalRules">0</h3>
+                        <p>Total Rules</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="ti ti-circle-check"></i></div>
+                    <div class="stat-info">
+                        <h3 id="activeRules">0</h3>
+                        <p>Active Rules</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="ti ti-circle-x"></i></div>
+                    <div class="stat-info">
+                        <h3 id="inactiveRules">0</h3>
+                        <p>Inactive Rules</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <i class="ti ti-search"></i>
+                <input type="text" id="searchInput" placeholder="Search by ID, source node, or destination node...">
+                <i class="ti ti-filter filter-icon"></i>
+            </div>
+
+            <div class="table-container">
+                <table class="rules-table">
+                    <thead>
+                        <tr><th>ID</th><th>Source Node</th><th>Destination Node</th><th>Status</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody id="rulesTableBody"><tr class="empty-row"><td colspan="5">Loading rules...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add/Edit Rule Modal -->
+        <div class="modal" id="ruleModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-icon"><i class="ti ti-code"></i></div>
+                    <h2 id="modalTitle">Add New Rule</h2>
+                    <button class="close-modal" id="closeModalBtn"><i class="ti ti-x"></i></button>
+                </div>
+                <form id="ruleForm">
+                    <input type="hidden" id="ruleId">
+                    <div class="form-container">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="ti ti-server"></i> Source Node <span class="required">*</span></label>
+                                <select id="sourceNodeId" class="node-select">
+                                    <option value="">Select Source Node...</option>
+                                </select>
+                                <div class="error-message" id="sourceNodeError">Source node is required</div>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="ti ti-network"></i> Destination Node <span class="required">*</span></label>
+                                <select id="destinationNodeId" class="node-select">
+                                    <option value="">Select Destination Node...</option>
+                                </select>
+                                <div class="error-message" id="destinationNodeError">Destination node is required</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="ti ti-toggle"></i> Rule Status</label>
+                                <div class="status-toggle">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="ruleStatus" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span id="statusLabel" class="status-label active">Active</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="ti ti-info-circle"></i> Rule Info</label>
+                                <div class="info-hint">
+                                    <i class="ti ti-info-circle"></i>
+                                    <span>Traffic flows from Source → Destination</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="cancel-btn" id="cancelModalBtn"><i class="ti ti-x"></i> Cancel</button>
+                        <button type="submit" class="save-btn"><i class="ti ti-device-floppy"></i> Save Rule</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Modal -->
+        <div class="modal" id="deleteModal">
+            <div class="modal-content delete-modal">
+                <div class="delete-modal-inner">
+                    <div class="delete-animation">
+                        <div class="delete-icon-wrapper">
+                            <div class="delete-icon-bg"></div>
+                            <i class="ti ti-trash-x"></i>
+                        </div>
+                    </div>
+                    <h2 class="delete-title">Delete Rule</h2>
+                    <p class="delete-subtitle">This action cannot be undone</p>
+                    <div class="delete-rule-card">
+                        <div class="delete-rule-icon">
+                            <i class="ti ti-code"></i>
+                        </div>
+                        <div class="delete-rule-info">
+                            <span class="delete-rule-label">Rule to delete</span>
+                            <strong class="delete-rule-id" id="deleteRuleId">ID: #</strong>
+                            <span class="delete-rule-path" id="deleteRulePath"></span>
+                        </div>
+                    </div>
+                    <div class="delete-warning-box">
+                        <i class="ti ti-alert-circle"></i>
+                        <div>
+                            <p>This rule will be permanently removed.</p>
+                            <span class="delete-warning-note">Data routing between these nodes will be affected.</span>
+                        </div>
+                    </div>
+                    <div class="delete-actions">
+                        <button class="delete-cancel-btn" id="cancelDeleteBtn">
+                            <i class="ti ti-x"></i> Cancel
+                        </button>
+                        <button class="delete-confirm-btn-enhanced" id="confirmDeleteBtn">
+                            <i class="ti ti-trash"></i> Yes, Delete Rule
+                        </button>
+                    </div>
+                </div>
+                <button class="delete-close-btn" id="closeDeleteModalBtn">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-container">
+                <div class="loading-spinner">
+                    <div class="circle"></div>
+                    <div class="logo-mini">
+                        <i class="ti ti-wave-sine"></i>
+                    </div>
+                </div>
+                <div class="loading-text">
+                    <h3>MediationX</h3>
+                    <p>Loading rules...</p>
+                </div>
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="loading-progress">
+                    <div class="loading-progress-bar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="toast" id="toast"></div>
+
+        <script src="../JS/Rules.js"></script>
+    </body>
+</html>

@@ -13,7 +13,6 @@ public class MediationSystem
     {
          List<NODE> up_stream_nodes = NODES_UP_STREAM.GET_NODES();
          
-
         while (true) 
         {
 
