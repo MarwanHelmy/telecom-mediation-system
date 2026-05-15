@@ -464,4 +464,39 @@ public class NODE {
 
         return null;
     }
+
+    public static int GetActiveNodes(Connection con) {
+
+        int activeNodesCount = 0;
+
+        try {
+
+            String sql = "SELECT get_active_nodes_count()";
+
+            PreparedStatement ps
+                    = con.prepareStatement(sql);
+
+            ResultSet rs
+                    = ps.executeQuery();
+
+            if (rs.next()) {
+
+                activeNodesCount = rs.getInt(1);
+            }
+
+            rs.close();
+            ps.close();
+
+        } catch (Exception ex) {
+
+            System.out.println(
+                    "Error in GetActiveNodes : "
+                    + ex.getMessage()
+            );
+
+            ex.printStackTrace();
+        }
+
+        return activeNodesCount;
+    }
 }

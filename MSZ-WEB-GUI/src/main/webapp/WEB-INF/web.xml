@@ -36,6 +36,14 @@
         <servlet-name>DeleteRuleServlet</servlet-name>
         <servlet-class>RULES_PK.DeleteRuleServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetInfoServlet</servlet-name>
+        <servlet-class>INFO_PK.GetInfoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>ADMIN_PK.LoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetAllNodesServlet</servlet-name>
         <url-pattern>/GetAllNodesServlet</url-pattern>
@@ -71,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>DeleteRuleServlet</servlet-name>
         <url-pattern>/DeleteRuleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetInfoServlet</servlet-name>
+        <url-pattern>/GetInfoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

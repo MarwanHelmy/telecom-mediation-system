@@ -57,13 +57,37 @@ function setCoreState(isActive)
 
 function loadCounts()
 {
-    // TODO:
-    // Replace with API or database values later
+    fetch("../GetInfoServlet")
 
-    nodeCountEl.textContent = '0';
-    ruleCountEl.textContent = '0';
+            .then(response => response.json())
+
+            .then(data =>
+            {
+                if (data.success)
+                {
+                    nodeCountEl.textContent =
+                            data.activeNodes;
+
+                    ruleCountEl.textContent =
+                            data.ruleCount;
+                }
+                else
+                {
+                    nodeCountEl.textContent = '0';
+                    ruleCountEl.textContent = '0';
+
+                    console.error(data.message);
+                }
+            })
+
+            .catch(error =>
+            {
+                nodeCountEl.textContent = '0';
+                ruleCountEl.textContent = '0';
+
+                console.error(error);
+            });
 }
-
 
 // ===============================
 // USER NAME
