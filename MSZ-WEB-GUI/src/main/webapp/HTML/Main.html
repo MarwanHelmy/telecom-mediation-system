@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+        <title>MediationX | Luminous Telecom Core</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+        <link rel="stylesheet" href="../CSS/Main.css" />
+    </head>
+    <body>
+        <div class="container" style="text-align: center;">
+            <div class="topbar">
+                <div class="brand">
+                    <div class="logo"><i class="ti ti-wave-sine"></i></div>
+                    <div class="brand-text"><h1>Mediation<span>X</span></h1><p>M S Z</p></div>
+                </div>
+                <div class="status"><div class="dot"></div><span>✨ ACTIVE · 12.4K CDR/s</span></div>
+            </div>
+
+            <div class="hero">
+                <div class="badge"><i class="ti ti-stars"></i> NEXT-GEN MEDIATION ENGINE</div>
+                <h2>Mediation System<br></h2>
+            </div>
+
+            <!-- Tasks Section -->
+            <div class="tasks-grid">
+                <div class="task-card"><i class="ti ti-database-import"></i><span><strong>COLLECT</strong> MSC · PGW · SMSC · GGSN</span></div>
+                <div class="task-card"><i class="ti ti-filter"></i><span><strong>NORMALIZE & FILTER</strong> enrich & validate</span></div>
+                <div class="task-card"><i class="ti ti-archive"></i><span><strong>ARCHIVE</strong> secure cold storage</span></div>
+                <div class="task-card"><i class="ti ti-share"></i><span><strong>DISTRIBUTE</strong> Billing · Fraud · DWH</span></div>
+            </div>
+
+            <!-- Dynamic Network -->
+            <div class="network" id="networkContainer">
+                <svg id="linkCanvas" xmlns="http://www.w3.org/2000/svg"></svg>
+
+                <!-- Left Sources -->
+                <div class="node" id="msc"><div class="box msc"><i class="ti ti-chart-bar"></i></div><div class="label">MSC</div></div>
+                <div class="node" id="pgw"><div class="box pgw"><i class="ti ti-world"></i></div><div class="label">PGW</div></div>
+                <div class="node" id="smsc"><div class="box smsc"><i class="ti ti-message"></i></div><div class="label">SMSC</div></div>
+                <div class="node" id="ggsn"><div class="box ggsn"><i class="ti ti-chart-histogram"></i></div><div class="label">GGSN</div></div>
+
+                <div class="node" id="storage"><div class="box storage"><i class="ti ti-database"></i></div><div class="label">CDR LAKE</div></div>
+
+                <div class="core" id="core"><div class="disk"><i class="ti ti-cpu"></i><h3>Mediation</h3><p>Core v5</p></div></div>
+
+                <div class="node" id="archive"><div class="box archive"><i class="ti ti-archive"></i></div><div class="label">ARCHIVE</div></div>
+
+                <div class="node" id="billing"><div class="box billing"><i class="ti ti-receipt"></i></div><div class="label">BILLING</div></div>
+                <div class="node" id="fraud"><div class="box fraud"><i class="ti ti-shield-lock"></i></div><div class="label">FRAUD</div></div>
+                <div class="node" id="dwh"><div class="box dwh"><i class="ti ti-building-warehouse"></i></div><div class="label">DATA WH</div></div>
+            </div>
+            <a class="btn" style="width: 40%;" href="Login.html"><i class="ti ti-sparkles"></i> Login </a>
+
+        </div>
+
+        <script src="../JS/Main.js"></script>
+    </body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+        <title>MediationX | Nodes Management</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="../CSS/Nodes.css">
+    </head>
+    <body>
+
+        <div class="floating-orb" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+        <div class="floating-orb" style="width: 200px; height: 200px; bottom: 50px; right: 30px; animation-delay: 2s;"></div>
+        <div class="floating-orb" style="width: 150px; height: 150px; top: 40%; right: 10%; animation-delay: 5s;"></div>
+
+        <div class="nodes-container">
+            <div class="nodes-header">
+                <div class="brand">
+                    <div class="logo"><i class="ti ti-wave-sine"></i></div>
+                    <h1>Mediation<span>X</span> Nodes</h1>
+                </div>
+                <div class="header-actions">
+                    <a class="back-btn" id="backBtn" href="../HTML/Dashboard.html">
+                        <i class="ti ti-arrow-left"></i>
+                        <span>Back to Dashboard</span>
+                    </a>
+                    <button class="add-node-btn" id="addNodeBtn">
+                        <i class="ti ti-plus"></i>
+                        <span>Add New Node</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-summary">
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="fa-solid fa-tower-cell"></i></div>
+                    <div class="stat-info">
+                        <h3 id="totalNodes">0</h3>
+                        <p>Total Nodes</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="ti ti-circle-check"></i></div>
+                    <div class="stat-info">
+                        <h3 id="activeNodes">0</h3>
+                        <p>Active Nodes</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon"><i class="ti ti-circle-x"></i></div>
+                    <div class="stat-info">
+                        <h3 id="inactiveNodes">0</h3>
+                        <p>Inactive Nodes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <i class="ti ti-search"></i>
+                <input type="text" id="searchInput" placeholder="Search by node name, IP, or type...">
+                <i class="ti ti-filter filter-icon"></i>
+            </div>
+
+            <div class="table-container">
+                <table class="nodes-table">
+                    <thead>
+                        <tr><th>ID</th><th>Node Name</th><th>IP:Port</th><th>Protocol</th><th>Type</th><th>Status</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody id="nodesTableBody"><tr class="empty-row"><td colspan="7">Loading nodes...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add/Edit Modal -->
+        <div class="modal" id="nodeModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-icon"><i class="ti ti-server"></i></div>
+                    <h2 id="modalTitle">Add New Node</h2>
+                    <button class="close-modal" id="closeModalBtn"><i class="ti ti-x"></i></button>
+                </div>
+                <form id="nodeForm">
+                    <input type="hidden" id="nodeId">
+                    <div class="form-container">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="ti ti-server"></i> Node Name <span class="required">*</span></label>
+                                <input type="text" id="nodeName" placeholder="e.g., MSC-Core-01">
+                                <div class="error-message" id="nodeNameError">Node name is required</div>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="ti ti-network"></i> IP Address <span class="required">*</span></label>
+                                <input type="text" id="nodeIp" placeholder="192.168.1.100">
+                                <div class="error-message" id="nodeIpError">Valid IP address required</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="ti ti-plug"></i> Port <span class="required">*</span></label>
+                                <input type="number" id="nodePort" placeholder="22">
+                                <div class="error-message" id="nodePortError">Port 1-65535 required</div>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="ti ti-protocol"></i> Protocol <span class="required">*</span></label>
+                                <div class="protocol-selector">
+                                    <label class="protocol-option"><input type="radio" name="protocol" value="FTP"><span class="protocol-card"><i class="ti ti-transfer"></i><strong>FTP</strong><small>File Transfer</small></span></label>
+                                    <label class="protocol-option"><input type="radio" name="protocol" value="SFTP" checked><span class="protocol-card"><i class="ti ti-lock"></i><strong>SFTP</strong><small>Secure FTP</small></span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="ti ti-category"></i> Node Type <span class="required">*</span></label>
+                                <div class="type-selector">
+                                    <label class="type-option"><input type="radio" name="nodeType" value="UPSTREAM" checked><span class="type-card upstream-card"><i class="ti ti-arrow-up"></i><strong>Upstream</strong><small>CDR Producer</small></span></label>
+                                    <label class="type-option"><input type="radio" name="nodeType" value="DOWNSTREAM"><span class="type-card downstream-card"><i class="ti ti-arrow-down"></i><strong>Downstream</strong><small>CDR Consumer</small></span></label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="ti ti-user"></i> Username <span class="required">*</span></label>
+                                <input type="text" id="nodeUsername" placeholder="ftp_user">
+                                <div class="error-message" id="nodeUsernameError">Username is required</div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="ti ti-lock"></i> Password <span class="required">*</span></label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="nodePassword" placeholder="Enter password">
+                                    <button type="button" class="toggle-password" id="togglePasswordBtn"><i class="ti ti-eye"></i></button>
+                                </div>
+                                <div class="error-message" id="nodePasswordError">Password is required</div>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="ti ti-toggle"></i> Node Status</label>
+                                <div class="status-toggle">
+                                    <label class="toggle-switch"><input type="checkbox" id="nodeStatus" checked><span class="toggle-slider"></span></label>
+                                    <span id="statusLabel" class="status-label active">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="cancel-btn" id="cancelModalBtn"><i class="ti ti-x"></i> Cancel</button>
+                        <button type="submit" class="save-btn"><i class="ti ti-device-floppy"></i> Save Node</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Modal -  -->
+        <div class="modal" id="deleteModal">
+            <div class="modal-content delete-modal">
+                <div class="delete-modal-inner">
+                    <div class="delete-animation">
+                        <div class="delete-icon-wrapper">
+                            <div class="delete-icon-bg"></div>
+                            <i class="ti ti-trash-x"></i>
+                        </div>
+                    </div>
+
+                    <h2 class="delete-title">Delete Node</h2>
+                    <p class="delete-subtitle">This action cannot be undone</p>
+
+                    <div class="delete-node-card">
+                        <div class="delete-node-icon">
+                            <i class="ti ti-server"></i>
+                        </div>
+                        <div class="delete-node-info">
+                            <span class="delete-node-label">Node to delete</span>
+                            <strong class="delete-node-name" id="deleteNodeName">Node Name</strong>
+                        </div>
+                    </div>
+
+                    <div class="delete-warning-box">
+                        <i class="ti ti-alert-circle"></i>
+                        <div>
+                            <p>All associated configurations will be removed.</p>
+                            <span class="delete-warning-note">This action is permanent and cannot be recovered.</span>
+                        </div>
+                    </div>
+                    <div class="delete-actions">
+                        <button class="delete-cancel-btn" id="cancelDeleteBtn">
+                            <i class="ti ti-x"></i>
+                            Cancel
+                        </button>
+                        <button class="delete-confirm-btn-enhanced" id="confirmDeleteBtn">
+                            <i class="ti ti-trash"></i>
+                            Yes, Delete Node
+                        </button>
+                    </div>
+                </div>
+                <button class="delete-close-btn" id="closeDeleteModalBtn">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-container">
+                <div class="loading-spinner">
+                    <div class="circle"></div>
+                    <div class="logo-mini">
+                        <i class="ti ti-wave-sine"></i>
+                    </div>
+                </div>
+                <div class="loading-text">
+                    <h3>MediationX</h3>
+                    <p>Loading nodes...</p>
+                </div>
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="loading-progress">
+                    <div class="loading-progress-bar"></div>
+                </div>
+            </div>
+        </div>
+        <div class="toast" id="toast"></div>
+
+        <script src="../JS/Nodes.js"></script>
+    </body>
+</html>

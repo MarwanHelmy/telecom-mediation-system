@@ -9,11 +9,9 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class NODE 
-{
+public class NODE {
 
     //============= ATTRIBUTESS =========================
-    
     private int NODE_ID;
     private String NODE_NAME;
     private String NODE_IP;
@@ -25,11 +23,10 @@ public class NODE
     private NODE_TYPE NODE_TYPE;
     private String SOURCE_DIRECTORY;
     private String ARCHIVE_DIRECTORY;
-    
+
     //============= GETTERS ============================
-    
     public int getNODE_ID() {
-    return NODE_ID;
+        return NODE_ID;
     }
 
     public String getNODE_NAME() {
@@ -67,11 +64,10 @@ public class NODE
     public String getARCHIVE_DIRECTORY() {
         return ARCHIVE_DIRECTORY;
     }
-    
-     //============= SETTERS ============================
-    
+
+    //============= SETTERS ============================
     public void setNODE_ID(int NODE_ID) {
-    this.NODE_ID = NODE_ID;
+        this.NODE_ID = NODE_ID;
     }
 
     public void setNODE_NAME(String NODE_NAME) {
@@ -109,30 +105,26 @@ public class NODE
     public void setARCHIVE_DIRECTORY(String ARCHIVE_DIRECTORY) {
         this.ARCHIVE_DIRECTORY = ARCHIVE_DIRECTORY;
     }
-    
+
     //============= CONNECTION ATTRIBUTESS =====================
-    
     private Session session;
     private ChannelSftp sftp;
     private FTPClient ftpClient;
 
     //============= CONSTRUCTORS ===============================
-    
-    public NODE
-    (
-        int NODE_ID, 
-        String NODE_NAME, 
-        String NODE_IP, 
-        int NODE_PORT,
-        String NODE_USER_NAME,
-        String NODE_PASSWORD,
-        NODE_PROTOCOL NODE_PROTOCOL, 
-        NODE_TYPE NODE_TYPE,
-        String SOURCE_DIRECTORY,
-        String ARCHIVE_DIRECTORY,
-        String NODE_AUTH
-    ) 
-    {
+    public NODE(
+            int NODE_ID,
+            String NODE_NAME,
+            String NODE_IP,
+            int NODE_PORT,
+            String NODE_USER_NAME,
+            String NODE_PASSWORD,
+            NODE_PROTOCOL NODE_PROTOCOL,
+            NODE_TYPE NODE_TYPE,
+            String SOURCE_DIRECTORY,
+            String ARCHIVE_DIRECTORY,
+            String NODE_AUTH
+    ) {
 
         this.NODE_ID = NODE_ID;
         this.NODE_NAME = NODE_NAME;
@@ -148,80 +140,99 @@ public class NODE
     }
 
     //============= METHODS NODE ============================
-    
     // CONNECT METHOD
-   
     public boolean connect() {
         try {
             switch (NODE_PROTOCOL) {
-
                 case SFTP:
+
                     JSch jsch = new JSch();
 
-                    session = jsch.getSession(NODE_USER_NAME, NODE_IP, NODE_PORT);
+                    session = jsch.getSession(
+                            NODE_USER_NAME,
+                            "localhost",
+                            NODE_PORT
+                    );
+
                     session.setPassword(NODE_PASSWORD);
-                    session.setConfig("StrictHostKeyChecking", "no");
+
+                    session.setConfig(
+                            "StrictHostKeyChecking",
+                            "no"
+                    );
+
                     session.connect();
+
                     break;
 
                 case FTP:
 
                     ftpClient = new FTPClient();
-                    ftpClient.connect(NODE_IP, NODE_PORT);
 
-                    if (!ftpClient.login(NODE_USER_NAME, NODE_PASSWORD)) {
-                        System.out.println("FTP Login Failed");
+                    ftpClient.connect(
+                            "localhost",
+                            NODE_PORT
+                    );
+
+                    System.out.println(
+                            "FTP REPLY : "
+                            + ftpClient.getReplyCode()
+                    );
+
+                    if (!ftpClient.login(
+                            NODE_USER_NAME,
+                            NODE_PASSWORD
+                    )) {
+                        System.out.println(
+                                "FTP Login Failed"
+                        );
+
                         return false;
                     }
 
                     ftpClient.enterLocalPassiveMode();
-                    ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+                    ftpClient.setFileType(
+                            FTP.BINARY_FILE_TYPE
+                    );
+
                     break;
             }
 
             return true;
+        } catch (Exception ex) {
+            System.out.println(
+                    "Connection Failed : "
+                    + ex.getMessage()
+            );
 
-        } 
-        catch (Exception ex) 
-        {
-            System.out.println("Connection Failed : " + ex.getMessage());
             return false;
         }
     }
 
     //═══════════════════════════════════════════════════════════════════════════════════════════
-    
     // OPEN CHANNEL METHOD
-    
     public boolean open_channel() {
         try {
-            if (NODE_PROTOCOL == NODE_PROTOCOL.SFTP) 
-            {
+            if (NODE_PROTOCOL == NODE_PROTOCOL.SFTP) {
                 Channel channel = session.openChannel("sftp");
                 channel.connect();
                 sftp = (ChannelSftp) channel;
-            } 
-            
+            }
+
             return true;
 
-        } 
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
             System.out.println("Open Channel Failed : " + ex.getMessage());
             return false;
         }
     }
 
-    
     //═══════════════════════════════════════════════════════════════════════════════════════════
-    
     // CHANGE DIRECTORY METHOD
-    
     public boolean change_directory() {
-        try 
-        {
-            switch (NODE_PROTOCOL) 
-            {
+        try {
+            switch (NODE_PROTOCOL) {
 
                 case SFTP:
 
@@ -241,27 +252,19 @@ public class NODE
 
             return true;
 
-        } 
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
             System.out.println("Directory Change Failed : " + ex.getMessage());
             return false;
         }
     }
 
-    
     //═══════════════════════════════════════════════════════════════════════════════════════════
-    
     // LIST FILES METHOD
-   
-    public String[] list_cdr_files() 
-    {
-        try 
-        {
+    public String[] list_cdr_files() {
+        try {
             ArrayList<String> filesList = new ArrayList<>();
 
-            switch (NODE_PROTOCOL) 
-            {
+            switch (NODE_PROTOCOL) {
 
                 case SFTP:
 
@@ -288,26 +291,21 @@ public class NODE
 
             return filesList.toArray(new String[0]);
 
-        } 
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
             System.out.println("List Files Failed : " + ex.getMessage());
             return null;
         }
     }
 
-    
     //═══════════════════════════════════════════════════════════════════════════════════════════
-    
     // DOWNLOAD FILE METHOD
-    
-    public File download_file(String fileName) 
-    {
-        try 
-        {
+    public File download_file(String fileName) {
+        try {
 
             File dir = new File("collection-cdr/new-cdr/" + NODE_NAME);
-            if (!dir.exists()) dir.mkdirs();
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
 
             File localFile = new File(dir, fileName);
 
@@ -325,122 +323,121 @@ public class NODE
 
                     out.close();
 
-                    if (!ok) return null;
+                    if (!ok) {
+                        return null;
+                    }
                     break;
             }
             return localFile;
 
-        } 
-        catch (Exception ex) 
-        {
+        } catch (Exception ex) {
             System.out.println("Download Failed : " + ex.getMessage());
             return null;
         }
     }
 
-   
     //═══════════════════════════════════════════════════════════════════════════════════════════
-    
     // ARCHIVE FILE METHOD
-    
     public boolean archive_file(String fileName) {
-
         try {
-
-            switch (NODE_PROTOCOL) {
-
+            switch (NODE_PROTOCOL)
+            {
+            
                 case SFTP:
-                
-                sftp.cd("/");
-                
-                String sourcePath = SOURCE_DIRECTORY + "/" + fileName;
-                String destPath = ARCHIVE_DIRECTORY + "/" + fileName;
-                
-                
-                try 
-                {
-                    sftp.lstat(ARCHIVE_DIRECTORY);
-                } catch (SftpException e) {
-                   
-                    sftp.mkdir(ARCHIVE_DIRECTORY);
-                }
-                
-                // Try the rename
-                try 
-                {
-                    sftp.rename(sourcePath, destPath);
-                   
-                } 
-                catch (SftpException e) 
-                {
-                    try 
-                    {
-                        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-                        sftp.get(sourcePath, baos);
-                        
-                        java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(baos.toByteArray());
-                        sftp.put(bais, destPath);
-                        
-                        sftp.rm(sourcePath);
-                        
-                        baos.close();
-                        bais.close();
-                          
-                    }
-                    catch (Exception ex)
-                    {
-                        return false;
-                    }
-                }
-                
-                sftp.cd(SOURCE_DIRECTORY);
-                break;
 
+                    String sourcePath
+                            = "/home/"
+                            + NODE_USER_NAME
+                            + "/"
+                            + SOURCE_DIRECTORY
+                            + "/"
+                            + fileName;
+
+                    String destDirectory
+                            = "/home/"
+                            + NODE_USER_NAME
+                            + "/"
+                            + ARCHIVE_DIRECTORY;
+
+                    String destPath
+                            = destDirectory
+                            + "/"
+                            + fileName;
+
+                    
+                    try {
+                        sftp.stat(destDirectory);
+                    } catch (Exception e) {
+                        sftp.mkdir(destDirectory);
+                    }
+
+                   
+                    sftp.rename(sourcePath, destPath);
+
+                    break;
+
+                // =====================================================
+                // FTP
+                // =====================================================
                 case FTP:
 
-                    String ftpDest = "../archive/" + fileName;
+                    String ftpDest
+                            = "../archive/"
+                            + fileName;
 
-                    boolean moved = ftpClient.rename(fileName, ftpDest);
+                    boolean moved
+                            = ftpClient.rename(
+                                    fileName,
+                                    ftpDest
+                            );
 
                     if (!moved) {
+                        System.out.println(
+                                "FTP MOVE FAILED"
+                        );
 
-                        System.out.println("FTP MOVE FAILED");
-                        System.out.println("REPLY : " + ftpClient.getReplyString());
+                        System.out.println(
+                                "REPLY : "
+                                + ftpClient.getReplyString()
+                        );
 
                         return false;
                     }
 
                     break;
             }
+
             return true;
-
         } catch (Exception ex) {
+            System.out.println(
+                    "Archive Failed : "
+                    + ex.getMessage()
+            );
 
-            System.out.println("Archive Failed : " + ex.getMessage());
+            ex.printStackTrace();
+
             return false;
         }
     }
-    
-    //═══════════════════════════════════════════════════════════════════════════════════════════
-   
-    // DISCONNECT METHOD
-   
-    public void disconnect()
-    {
-        try 
-        {
 
-            if (sftp != null) sftp.disconnect();
-            if (session != null) session.disconnect();
+    //═══════════════════════════════════════════════════════════════════════════════════════════
+    // DISCONNECT METHOD
+    public void disconnect() {
+        try {
+
+            if (sftp != null) {
+                sftp.disconnect();
+            }
+            if (session != null) {
+                session.disconnect();
+            }
 
             if (ftpClient != null && ftpClient.isConnected()) {
                 ftpClient.logout();
                 ftpClient.disconnect();
             }
 
-        } 
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println("Disconnect Failed : " + ex.getMessage());
         }
     }
