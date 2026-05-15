@@ -248,4 +248,40 @@ public class RULE {
 
         return rules;
     }
+
+    public static int GetActiveRulesCount(Connection con) {
+
+        int rulesCount = 0;
+
+        try {
+
+            String sql
+                    = "SELECT get_active_rules_count()";
+
+            PreparedStatement ps
+                    = con.prepareStatement(sql);
+
+            ResultSet rs
+                    = ps.executeQuery();
+
+            if (rs.next()) {
+
+                rulesCount = rs.getInt(1);
+            }
+
+            rs.close();
+            ps.close();
+
+        } catch (Exception ex) {
+
+            System.out.println(
+                    "Error in GetActiveRulesCount : "
+                    + ex.getMessage()
+            );
+
+            ex.printStackTrace();
+        }
+
+        return rulesCount;
+    }
 }

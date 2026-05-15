@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict PX6thIduLDzbcQD4UaAfEQ2seJERmRK56exPbF8PGRd7rHAMmAaodGj8F8a7rxa
+\restrict QqHrKCkrjgcadgYy7EacVp7xl3LYwCyydVAlhPSfndlJIgYwFRBMpM7P6e6OSmL
 
 -- Dumped from database version 16.11
 -- Dumped by pg_dump version 16.11
@@ -28,9 +28,9 @@ CREATE DATABASE msdb WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER
 
 ALTER DATABASE msdb OWNER TO postgres;
 
-\unrestrict PX6thIduLDzbcQD4UaAfEQ2seJERmRK56exPbF8PGRd7rHAMmAaodGj8F8a7rxa
+\unrestrict QqHrKCkrjgcadgYy7EacVp7xl3LYwCyydVAlhPSfndlJIgYwFRBMpM7P6e6OSmL
 \connect msdb
-\restrict PX6thIduLDzbcQD4UaAfEQ2seJERmRK56exPbF8PGRd7rHAMmAaodGj8F8a7rxa
+\restrict QqHrKCkrjgcadgYy7EacVp7xl3LYwCyydVAlhPSfndlJIgYwFRBMpM7P6e6OSmL
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -92,6 +92,29 @@ $$;
 
 
 ALTER FUNCTION public.add_node(p_name character varying, p_type character varying, p_protocol character varying, p_auth_type character varying, p_username character varying, p_password character varying, p_ip character varying, p_port integer, p_data_path character varying, p_archive_path character varying, p_isactive boolean) OWNER TO postgres;
+
+--
+-- Name: admin_login(character varying, character varying); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.admin_login(p_username character varying, p_password character varying) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+
+    RETURN EXISTS
+    (
+        SELECT 1
+        FROM public.admins
+        WHERE username = p_username
+        AND password = p_password
+    );
+
+END;
+$$;
+
+
+ALTER FUNCTION public.admin_login(p_username character varying, p_password character varying) OWNER TO postgres;
 
 --
 -- Name: check_duplicate_rule(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
@@ -235,6 +258,46 @@ $$;
 
 
 ALTER FUNCTION public.delete_rules_on_type_change() OWNER TO postgres;
+
+--
+-- Name: get_active_nodes_count(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.get_active_nodes_count() RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    active_count INTEGER;
+BEGIN
+
+    SELECT COUNT(*)
+    INTO active_count
+    FROM public.nodes
+    WHERE isactive = true
+    AND isdeleted = false;
+
+    RETURN active_count;
+
+END;
+$$;
+
+
+ALTER FUNCTION public.get_active_nodes_count() OWNER TO postgres;
+
+--
+-- Name: get_active_rules_count(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.get_active_rules_count() RETURNS integer
+    LANGUAGE sql
+    AS $$
+    SELECT COUNT(*)
+    FROM public.routing_rules
+    WHERE is_active = true;
+$$;
+
+
+ALTER FUNCTION public.get_active_rules_count() OWNER TO postgres;
 
 --
 -- Name: get_all_nodes(); Type: FUNCTION; Schema: public; Owner: postgres
@@ -670,6 +733,41 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: admins; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.admins (
+    id integer NOT NULL,
+    username character varying(50) NOT NULL,
+    password character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.admins OWNER TO postgres;
+
+--
+-- Name: admins_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.admins_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.admins_id_seq OWNER TO postgres;
+
+--
+-- Name: admins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.admins_id_seq OWNED BY public.admins.id;
+
+
+--
 -- Name: nodes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -753,6 +851,13 @@ ALTER SEQUENCE public.routing_rules_id_seq OWNED BY public.routing_rules.id;
 
 
 --
+-- Name: admins id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.admins ALTER COLUMN id SET DEFAULT nextval('public.admins_id_seq'::regclass);
+
+
+--
 -- Name: nodes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -767,15 +872,24 @@ ALTER TABLE ONLY public.routing_rules ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Data for Name: admins; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.admins (id, username, password) FROM stdin;
+1	admin	123456
+\.
+
+
+--
 -- Data for Name: nodes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.nodes (id, name, type, protocol, auth_type, username, password, ip, port, data_path, archive_path, isactive, isdeleted) FROM stdin;
 30	GSSN	UPSTREAM	SFTP	password	gssn	wqrq	172.30.0.30	45	cdrs	archive	f	f
-31	BILLING	DOWNSTREAM	SFTP	password	billing	2352	172.30.0.40	50	cdrs	archive	f	f
-32	DWH	DOWNSTREAM	FTP	password	dwh	ewrR	172.30.0.60	60	ftp/cdrs	ftp/archive	f	f
 27	MSC	UPSTREAM	FTP	password	msc	1133	172.30.0.10	15	ftp/cdrs	ftp/archive	f	f
 28	SMSC	UPSTREAM	SFTP	password	smsc	214215	172.30.0.20	20	cdrs	archive	f	f
+31	BILLING	DOWNSTREAM	SFTP	password	billing	2352	172.30.0.40	50	cdrs	archive	f	f
+32	DWH	DOWNSTREAM	FTP	password	dwh	ewrR	172.30.0.60	60	ftp/cdrs	ftp/archive	f	f
 \.
 
 
@@ -785,10 +899,17 @@ COPY public.nodes (id, name, type, protocol, auth_type, username, password, ip, 
 
 COPY public.routing_rules (id, source_node_id, destination_node_id, is_active, created_at) FROM stdin;
 12	27	32	t	2026-05-15 23:07:51.793862
-13	28	32	t	2026-05-15 23:07:58.637592
 14	30	32	t	2026-05-15 23:08:04.700109
+13	28	32	t	2026-05-15 23:07:58.637592
 15	27	31	t	2026-05-15 23:08:14.031093
 \.
+
+
+--
+-- Name: admins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.admins_id_seq', 1, true);
 
 
 --
@@ -803,6 +924,22 @@ SELECT pg_catalog.setval('public.nodes_id_seq', 32, true);
 --
 
 SELECT pg_catalog.setval('public.routing_rules_id_seq', 15, true);
+
+
+--
+-- Name: admins admins_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.admins
+    ADD CONSTRAINT admins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: admins admins_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.admins
+    ADD CONSTRAINT admins_username_key UNIQUE (username);
 
 
 --
@@ -871,5 +1008,5 @@ ALTER TABLE ONLY public.routing_rules
 -- PostgreSQL database dump complete
 --
 
-\unrestrict PX6thIduLDzbcQD4UaAfEQ2seJERmRK56exPbF8PGRd7rHAMmAaodGj8F8a7rxa
+\unrestrict QqHrKCkrjgcadgYy7EacVp7xl3LYwCyydVAlhPSfndlJIgYwFRBMpM7P6e6OSmL
 

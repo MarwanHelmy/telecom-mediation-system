@@ -15,7 +15,7 @@ public class DB_Local
             "postgres";
 
     private static final String PASSWORD =
-            "your password";
+            "20186047Ziad";
 
     // ================= GET CONNECTION =================
 
