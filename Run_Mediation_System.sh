@@ -1,18 +1,15 @@
 #!/bin/bash
 
-docker start msc_node
-docker start pgw_node
-docker start smsc-node
+MAVEN=mvn
 
-export JAVA_HOME=$HOME/portable-java/current
-export PATH=$JAVA_HOME/bin:$PATH
-MAVEN=$HOME/portable-netbeans/current/java/maven/bin/mvn
+cd $HOME/telecom-mediation-system/Mediation-System
 
-clear;
-cd $HOME/telecom-mediation-system/Mediation-System;
-$MAVEN clean compile > /dev/null 2>&1;
+echo "====================================="
+echo "⚙️  COMPILING PROJECT..."
+echo "====================================="
+$MAVEN clean compile
 
-clear;
-# run app (quiet mode)
-$MAVEN -q exec:java -Dexec.mainClass=Main_PK.MediationSystem;
-clear;
+echo "====================================="
+echo "🚀 RUNNING MEDIATION SYSTEM..."
+echo "====================================="
+$MAVEN exec:java -Dexec.mainClass=Main_PK.MediationSystem
