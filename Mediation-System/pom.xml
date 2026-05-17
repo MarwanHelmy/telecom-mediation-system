@@ -10,7 +10,7 @@
         <maven.compiler.release>25</maven.compiler.release>
         <exec.mainClass>Main_PK.MediationSystem</exec.mainClass>
     </properties>
-    <dependencies>
+<dependencies>
         <dependency>
             <groupId>com.github.mwiede</groupId>
             <artifactId>jsch</artifactId>
@@ -22,14 +22,9 @@
             <version>3.9.0</version>
         </dependency>
         <dependency>
-            <groupId>com.github.mwiede</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.2.16</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.3</version>
         </dependency>
-        <dependency>
-        <groupId>org.postgresql</groupId>
-        <artifactId>postgresql</artifactId>
-        <version>42.7.3</version>
-    </dependency>
     </dependencies>
 </project>

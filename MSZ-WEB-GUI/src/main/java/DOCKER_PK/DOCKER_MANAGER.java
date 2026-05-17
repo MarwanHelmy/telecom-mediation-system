@@ -196,12 +196,14 @@ public class DOCKER_MANAGER {
             // =====================================================
             // FTP PASSIVE PORTS
             // =====================================================
+
             if ("FTP".equals(node.getNODE_PROTOCOL())) {
                 command.add("-p");
 
-                command.add(
-                        "21100-21110:21100-21110"
-                );
+                int baseHostPort = 20000 + (node.getNODE_PORT() * 100); 
+                int endHostPort = baseHostPort + 10;
+
+                command.add(baseHostPort + "-" + endHostPort + ":21100-21110");
             }
 
             // =====================================================
