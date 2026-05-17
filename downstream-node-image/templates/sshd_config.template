@@ -1,0 +1,19 @@
+# =========================================================
+# templates/sshd_config.template
+# =========================================================
+
+Port NODE_PORT
+
+PermitRootLogin no
+
+PasswordAuthentication yes
+
+PubkeyAuthentication yes
+
+UsePAM yes
+
+Subsystem sftp internal-sftp
+
+AllowTcpForwarding yes
+
+X11Forwarding no
