@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DB_Local
+public class DB
 {
-    // ================= NEON CLOUD POSTGRES CONFIG =================
+    // ================= DATABASE CONFIG =================
 
     private static final String URL =
             "jdbc:postgresql://ep-flat-meadow-amtyc26l.c-5.us-east-1.aws.neon.tech/neondb"
@@ -22,6 +22,7 @@ public class DB_Local
             "npg_4HJUyiRrC7sZ";
 
     // ================= GET CONNECTION =================
+
     public static Connection getConnection()
     {
         try
@@ -35,17 +36,27 @@ public class DB_Local
                             PASSWORD
                     );
 
-            System.out.println("Successfully Connected to NEON Cloud Database!");
+            System.out.println(
+                    "Database Connected Successfully"
+            );
+
             return con;
         }
         catch (ClassNotFoundException e)
         {
-            System.out.println("PostgreSQL Driver Not Found");
+            System.out.println(
+                    "PostgreSQL Driver Not Found"
+            );
+
             e.printStackTrace();
         }
         catch (SQLException e)
         {
-            System.out.println("Neon Database Connection Failed : " + e.getMessage());
+            System.out.println(
+                    "Database Connection Failed : "
+                    + e.getMessage()
+            );
+
             e.printStackTrace();
         }
 

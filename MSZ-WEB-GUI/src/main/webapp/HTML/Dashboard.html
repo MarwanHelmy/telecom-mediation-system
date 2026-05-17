@@ -1,0 +1,193 @@
+<!-- Dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+        <title>MediationX | Dashboard</title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+        <link rel="stylesheet" href="../CSS/Dashboard.css">
+    </head>
+
+    <body>
+
+        <div class="floating-orb" style="width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+        <div class="floating-orb" style="width: 200px; height: 200px; bottom: 50px; right: 30px; animation-delay: 2s;"></div>
+        <div class="floating-orb" style="width: 150px; height: 150px; top: 40%; right: 10%; animation-delay: 5s;"></div>
+
+        <div class="dashboard-container">
+
+            <!-- Header -->
+            <div class="dashboard-header">
+
+                <div class="brand">
+                    <div class="logo">
+                        <i class="ti ti-wave-sine"></i>
+                    </div>
+
+                    <h1>Mediation<span>X</span> Dashboard</h1>
+                </div>
+
+                <div class="user-info">
+                    <i class="ti ti-user-circle"></i>
+
+                    <span id="userNameDisplay">
+                        Mediation Engineer
+                    </span>
+
+                    <a class="logout-btn" id="logoutBtn" href="../HTML/Main.html">
+                        <i class="ti ti-logout" style="color:white"></i>
+                        Logout
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Live Core -->
+            <div class="live-core" id="liveCore">
+
+                <div class="section-title">
+
+                    <i class="ti ti-cpu"></i>
+
+                    <span>Live Mediation Core</span>
+
+                    <div class="live-badge active" id="liveBadge">
+
+                        <div class="live-dot"></div>
+
+                        <span id="badgeText">
+                            ACTIVE
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="core-visualization">
+
+                    <!-- Orbit Rings -->
+                    <div class="orbit-ring orbit-1"></div>
+                    <div class="orbit-ring orbit-2"></div>
+                    <div class="orbit-ring orbit-3"></div>
+
+                    <!-- Pulse Ring -->
+                    <div class="pulse-ring"></div>
+
+                    <!-- Core -->
+                    <div class="core-node">
+
+                        <i class="ti ti-settings-cog"></i>
+
+                        <h3>Mediation Core</h3>
+
+                        <p id="coreVersion">
+                            v5.2.1 |
+                            <span style="color:#00E5A0;">
+                                Live
+                            </span>
+                        </p>
+
+                    </div>
+
+                    <!-- Particles -->
+                    <div class="flow-particles">
+
+                        <div class="particle p1"></div>
+                        <div class="particle p2"></div>
+                        <div class="particle p3"></div>
+                        <div class="particle p4"></div>
+                        <div class="particle p5"></div>
+                        <div class="particle p6"></div>
+                        <div class="particle p7"></div>
+                        <div class="particle p8"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <i class="fa-solid fa-satellite-dish"></i>
+
+                    <h3 id="nodeCount">0</h3>
+
+                    <p>Active Nodes</p>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <i class="fa-solid fa-server"></i>
+
+                    <h3 id="ruleCount">0</h3>
+
+                    <p>Mediation Rules</p>
+
+                </div>
+
+            </div>
+
+            <!-- Management -->
+            <div class="management-grid">
+
+                <div class="management-card" data-page="Nodes.html">
+
+                    <div class="card-icon">
+                        <i class="fa-solid fa-tower-cell"></i>
+                    </div>
+
+                    <h3>Nodes</h3>
+
+                    <p>
+                        View, add, edit and manage all mediation nodes in the network
+                    </p>
+
+                    <div class="card-footer">
+
+                        <span>Manage Nodes</span>
+
+                        <i class="ti ti-arrow-right"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="management-card" data-page="Rules.html">
+
+                    <div class="card-icon">
+                        <i class="ti ti-file-settings"></i>
+                    </div>
+
+                    <h3>Mediation Rules</h3>
+
+                    <p>
+                        Create, edit, and manage CDR processing rules and filters
+                    </p>
+
+                    <div class="card-footer">
+
+                        <span>Manage Rules</span>
+
+                        <i class="ti ti-arrow-right"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script src="../JS/Dashboard.js"></script>
+
+    </body>
+</html>

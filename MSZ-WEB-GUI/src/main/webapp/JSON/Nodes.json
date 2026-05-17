@@ -1,0 +1,52 @@
+{
+    "nodes": [
+        {
+            "id": 1,
+            "nodeName": "MSC-Core-01",
+            "nodeIp": "192.168.1.10",
+            "nodePort": 22,
+            "nodeUserName": "mediation_user",
+            "nodePassword": "encrypted_pass",
+            "nodeAuth": "PASSWORD",
+            "nodeProtocol": "SFTP",
+            "nodeType": "UPSTREAM",
+            "status": "ACTIVE"
+        },
+        {
+            "id": 2,
+            "nodeName": "PGW-Gateway-01",
+            "nodeIp": "192.168.1.20",
+            "nodePort": 21,
+            "nodeUserName": "ftp_user",
+            "nodePassword": "encrypted_pass",
+            "nodeAuth": "PASSWORD",
+            "nodeProtocol": "FTP",
+            "nodeType": "UPSTREAM",
+            "status": "ACTIVE"
+        },
+        {
+            "id": 3,
+            "nodeName": "BILLING-System",
+            "nodeIp": "192.168.1.100",
+            "nodePort": 22,
+            "nodeUserName": "billing_user",
+            "nodePassword": "encrypted_pass",
+            "nodeAuth": "PASSWORD",
+            "nodeProtocol": "SFTP",
+            "nodeType": "DOWNSTREAM",
+            "status": "INACTIVE"
+        },
+        {
+            "id": 4,
+            "nodeName": "DWH-DataLake",
+            "nodeIp": "192.168.1.101",
+            "nodePort": 22,
+            "nodeUserName": "dwh_user",
+            "nodePassword": "encrypted_pass",
+            "nodeAuth": "PASSWORD",
+            "nodeProtocol": "SFTP",
+            "nodeType": "DOWNSTREAM",
+            "status": "ACTIVE"
+        }
+    ]
+}
