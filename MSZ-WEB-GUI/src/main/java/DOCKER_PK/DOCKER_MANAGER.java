@@ -203,7 +203,13 @@ public class DOCKER_MANAGER {
                 int baseHostPort = 20000 + (node.getNODE_PORT() * 100); 
                 int endHostPort = baseHostPort + 10;
 
-                command.add(baseHostPort + "-" + endHostPort + ":21100-21110");
+                command.add(baseHostPort + "-" + endHostPort + ":" + baseHostPort + "-" + endHostPort);
+
+                command.add("-e");
+                command.add("PASV_MIN=" + baseHostPort);
+
+                command.add("-e");
+                command.add("PASV_MAX=" + endHostPort);
             }
 
             // =====================================================

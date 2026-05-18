@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.io.FileInputStream;
 
 public class NODE {
 
@@ -145,67 +146,35 @@ public class NODE {
         try {
             switch (NODE_PROTOCOL) {
                 case SFTP:
-
                     JSch jsch = new JSch();
-
                     session = jsch.getSession(
                             NODE_USER_NAME,
                             "localhost",
                             NODE_PORT
                     );
-
                     session.setPassword(NODE_PASSWORD);
-
-                    session.setConfig(
-                            "StrictHostKeyChecking",
-                            "no"
-                    );
-
+                    session.setConfig("StrictHostKeyChecking", "no");
                     session.connect();
-
                     break;
 
                 case FTP:
-
                     ftpClient = new FTPClient();
-
                     ftpClient.connect(
                             "localhost",
                             NODE_PORT
                     );
-
-                    System.out.println(
-                            "FTP REPLY : "
-                            + ftpClient.getReplyCode()
-                    );
-
-                    if (!ftpClient.login(
-                            NODE_USER_NAME,
-                            NODE_PASSWORD
-                    )) {
-                        System.out.println(
-                                "FTP Login Failed"
-                        );
-
+                    System.out.println("FTP REPLY : " + ftpClient.getReplyCode());
+                    if (!ftpClient.login(NODE_USER_NAME, NODE_PASSWORD)) {
+                        System.out.println("FTP Login Failed");
                         return false;
                     }
-
                     ftpClient.enterLocalPassiveMode();
-
-                    ftpClient.setFileType(
-                            FTP.BINARY_FILE_TYPE
-                    );
-
+                    ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
                     break;
             }
-
             return true;
         } catch (Exception ex) {
-            System.out.println(
-                    "Connection Failed : "
-                    + ex.getMessage()
-            );
-
+            System.out.println("Connection Failed : " + ex.getMessage());
             return false;
         }
     }
@@ -333,6 +302,33 @@ public class NODE {
         } catch (Exception ex) {
             System.out.println("Download Failed : " + ex.getMessage());
             return null;
+        }
+    }
+    
+    
+        //═══════════════════════════════════════════════════════════════════════════════════════════
+    // FILE METHOD
+    public boolean upload_file(File localFile) {
+        try {
+            switch (NODE_PROTOCOL) {
+                case SFTP:
+                    sftp.put(localFile.getAbsolutePath(), localFile.getName());
+                    break;
+                    
+                case FTP:
+                    FileInputStream in = new FileInputStream(localFile);
+                    boolean ok = ftpClient.storeFile(localFile.getName(), in);
+                    in.close();
+                    
+                    if (!ok) {
+                        return false;
+                    }
+                    break;
+            }
+            return true;
+        } catch (Exception ex) {
+            System.out.println("UPLOAD FAILED : " + ex.getMessage());
+            return false;
         }
     }
 
