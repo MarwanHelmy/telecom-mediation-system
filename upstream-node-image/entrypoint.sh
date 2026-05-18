@@ -54,8 +54,18 @@ if [ "$PROTOCOL" = "FTP" ]; then
     sed -i "s/NODE_PORT/$NODE_PORT/g" \
     /etc/vsftpd.conf
 
-    sed -i "s/NODE_IP/$NODE_IP/g" \
+    sed -i "s/NODE_IP/127.0.0.1/g" \
     /etc/vsftpd.conf
+
+    sed -i "s/pasv_min_port=21100/pasv_min_port=$PASV_MIN/g" \
+    /etc/vsftpd.conf
+
+    sed -i "s/pasv_max_port=21110/pasv_max_port=$PASV_MAX/g" \
+    /etc/vsftpd.conf
+
+    echo "====================================="
+    echo "VSFTPD CONFIG"
+    echo "====================================="
 
     cat /etc/vsftpd.conf
 
