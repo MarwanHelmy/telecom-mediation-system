@@ -6,22 +6,19 @@ import java.sql.SQLException;
 
 public class DB_Local
 {
-    // ================= NEON CLOUD POSTGRES CONFIG =================
+    // ================= LOCAL POSTGRES CONFIG =================
 
     private static final String URL =
-            "jdbc:postgresql://ep-flat-meadow-amtyc26l.c-5.us-east-1.aws.neon.tech/neondb"
-            + "?sslmode=require"
-            + "&channel_binding=require"
-            + "&connectTimeout=30"
-            + "&socketTimeout=30";
+            "jdbc:postgresql://localhost:5432/msdb";
 
     private static final String USER =
-            "neondb_owner";
+            "postgres";
 
     private static final String PASSWORD =
-            "npg_4HJUyiRrC7sZ";
+            "yourpass";
 
     // ================= GET CONNECTION =================
+
     public static Connection getConnection()
     {
         try
@@ -35,17 +32,23 @@ public class DB_Local
                             PASSWORD
                     );
 
-            System.out.println("Successfully Connected to NEON Cloud Database!");
             return con;
         }
         catch (ClassNotFoundException e)
         {
-            System.out.println("PostgreSQL Driver Not Found");
+            System.out.println(
+                    "PostgreSQL Driver Not Found"
+            );
+
             e.printStackTrace();
         }
         catch (SQLException e)
         {
-            System.out.println("Neon Database Connection Failed : " + e.getMessage());
+            System.out.println(
+                    "Local Database Connection Failed : "
+                    + e.getMessage()
+            );
+
             e.printStackTrace();
         }
 

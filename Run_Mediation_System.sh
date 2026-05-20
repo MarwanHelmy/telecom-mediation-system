@@ -1,15 +1,15 @@
 #!/bin/bash
 
-MAVEN=mvn
 
-cd $HOME/telecom-mediation-system/Mediation-System
+export JAVA_HOME=$HOME/portable-java/current
+export PATH=$JAVA_HOME/bin:$PATH
+MAVEN=$HOME/portable-netbeans/current/java/maven/bin/mvn
 
-echo "====================================="
-echo "⚙️  COMPILING PROJECT..."
-echo "====================================="
-$MAVEN clean compile
+clear;
+cd $HOME/telecom-mediation-system/Mediation-System;
+$MAVEN clean compile > /dev/null 2>&1;
 
-echo "====================================="
-echo "🚀 RUNNING MEDIATION SYSTEM..."
-echo "====================================="
-$MAVEN exec:java -Dexec.mainClass=Main_PK.MediationSystem
+clear;
+# run app (quiet mode)
+$MAVEN -q exec:java -Dexec.mainClass=Main_PK.MediationSystem;
+clear;

@@ -1,6 +1,6 @@
 package NODE_PK;
 
-import DB_PK.DB_Local;
+import DB_PK.DB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +15,7 @@ public class NODES_UP_STREAM
         try
         {
             String sql = "select * from get_upstream_nodes()";
-            Connection con = DB_Local.getConnection();
+            Connection con = DB.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next())

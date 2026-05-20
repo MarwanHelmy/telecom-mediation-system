@@ -163,7 +163,6 @@ public class NODE {
                             "localhost",
                             NODE_PORT
                     );
-                    System.out.println("FTP REPLY : " + ftpClient.getReplyCode());
                     if (!ftpClient.login(NODE_USER_NAME, NODE_PASSWORD)) {
                         System.out.println("FTP Login Failed");
                         return false;

@@ -34,8 +34,6 @@ public class DB_Local
                             USER,
                             PASSWORD
                     );
-
-            System.out.println("Successfully Connected to NEON Cloud Database!");
             return con;
         }
         catch (ClassNotFoundException e)

@@ -1,6 +1,6 @@
 NODE_PK/GetDownstreamNodesServlet$Node.class
-DB_PK/DB.class
 NODE_PK/SaveNodeServlet.class
+DB_PK/DB.class
 DOCKER_PK/DOCKER_MANAGER.class
 NODE_PK/DeleteNodeServlet.class
 NODE_PK/GetUpstreamNodesServlet.class
