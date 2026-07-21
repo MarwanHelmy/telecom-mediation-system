@@ -50,6 +50,10 @@ public class NODE {
         return NODE_PASSWORD;
     }
 
+    public String getNODE_AUTH() {
+        return NODE_AUTH;
+    }
+
     public NODE_PROTOCOL getNODE_PROTOCOL() {
         return NODE_PROTOCOL;
     }
@@ -89,6 +93,10 @@ public class NODE {
 
     public void setNODE_PASSWORD(String NODE_PASSWORD) {
         this.NODE_PASSWORD = NODE_PASSWORD;
+    }
+
+    public void setNODE_AUTH(String NODE_AUTH) {
+        this.NODE_AUTH = NODE_AUTH;
     }
 
     public void setNODE_PROTOCOL(NODE_PROTOCOL NODE_PROTOCOL) {
@@ -182,7 +190,7 @@ public class NODE {
     // OPEN CHANNEL METHOD
     public boolean open_channel() {
         try {
-            if (NODE_PROTOCOL == NODE_PROTOCOL.SFTP) {
+            if (NODE_PROTOCOL == NODE_PK.NODE_PROTOCOL.SFTP) {
                 Channel channel = session.openChannel("sftp");
                 channel.connect();
                 sftp = (ChannelSftp) channel;
