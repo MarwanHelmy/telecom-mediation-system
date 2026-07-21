@@ -2,7 +2,7 @@ package INFO_PK;
 
 import DB_PK.DB_Local;
 import NODE_PK.NODE;
-import RULE_PK.RULE;
+import RULES_PK.RULE;
 
 import java.io.IOException;
 import java.sql.Connection;

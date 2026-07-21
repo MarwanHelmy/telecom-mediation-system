@@ -1,4 +1,4 @@
-package RULE_PK;
+package RULES_PK;
 
 import DB_PK.DB_Local;
 import java.sql.CallableStatement;
