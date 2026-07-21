@@ -1,3 +1,7 @@
 /Mediation-System/target/
 /MZ-WEB-GUI/target/
 /MSZ-WEB-GUI/target/
+/Mediation-System/collection-cdr/old-cdr/
+.vscode/
+Mediation-System/src/main/java/DB_PK/DB.java 
+MSZ-WEB-GUI/src/main/java/DB_PK/DB.java

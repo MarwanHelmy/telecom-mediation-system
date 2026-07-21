@@ -1,6 +1,6 @@
 package INFO_PK;
 
-import DB_PK.DB_Local;
+import DB_PK.DB;
 import NODE_PK.NODE;
 import RULES_PK.RULE;
 
@@ -26,7 +26,7 @@ public class GetInfoServlet extends HttpServlet {
 
         try {
 
-            con = DB_Local.getConnection();
+            con = DB.getConnection();
 
             int activeNodes
                     = NODE.GetActiveNodes(con);

@@ -1,6 +1,6 @@
 package NODE_PK;
 
-import DB_PK.DB_Local;
+import DB_PK.DB;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +21,7 @@ public class GetAllNodesServlet extends HttpServlet {
 
         try 
         {
-            Connection con = DB_Local.getConnection();
+            Connection con = DB.getConnection();
             List<NODE> nodes = NODE.GET_ALL_NODES(con);
 
             Gson gson = new Gson();

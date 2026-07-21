@@ -1,7 +1,7 @@
 package ADMIN_PK;
 
 
-import DB_PK.DB_Local;
+import DB_PK.DB;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet
             // GET CONNECTION
             // =========================
             con =
-                    DB_Local.getConnection();
+                    DB.getConnection();
 
             // CHECK CONNECTION
             if (con == null)

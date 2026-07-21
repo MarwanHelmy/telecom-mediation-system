@@ -1,6 +1,6 @@
 package RULES_PK;
 
-import DB_PK.DB_Local;
+import DB_PK.DB;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -120,7 +120,7 @@ public class RULE {
 
         String sql = "{ ? = call delete_rule(?) }";
 
-        try (Connection conn = DB_Local.getConnection(); CallableStatement stmt = conn.prepareCall(sql)) {
+        try (Connection conn = DB.getConnection(); CallableStatement stmt = conn.prepareCall(sql)) {
 
             stmt.registerOutParameter(1, Types.BOOLEAN);
 
@@ -140,7 +140,7 @@ public class RULE {
     public static boolean checkDuplicateRule(int sourceNodeId, int destinationNodeId) {
         String sql = "SELECT check_duplicate_rule(?, ?)";
 
-        try (Connection conn = DB_Local.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DB.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, sourceNodeId);
             stmt.setInt(2, destinationNodeId);
@@ -161,7 +161,7 @@ public class RULE {
     public static boolean insertRule(int sourceNodeId, int destinationNodeId, boolean isActive) {
         String sql = "SELECT insert_rule(?, ?, ?)";
 
-        try (Connection conn = DB_Local.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DB.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, sourceNodeId);
             stmt.setInt(2, destinationNodeId);
@@ -183,7 +183,7 @@ public class RULE {
     public static boolean updateRule(int ruleId, int sourceNodeId, int destinationNodeId, boolean isActive) {
         String sql = "SELECT update_rule(?, ?, ?, ?)";
 
-        try (Connection conn = DB_Local.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DB.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, ruleId);
             stmt.setInt(2, sourceNodeId);
@@ -206,7 +206,7 @@ public class RULE {
     public static boolean checkDuplicateRuleExcludeId(int sourceNodeId, int destinationNodeId, int excludeId) {
         String sql = "SELECT check_duplicate_rule_exclude_id(?, ?, ?)";
 
-        try (Connection conn = DB_Local.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DB.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, sourceNodeId);
             stmt.setInt(2, destinationNodeId);
@@ -229,7 +229,7 @@ public class RULE {
         List<RULE> rules = new ArrayList<>();
         String sql = "SELECT * FROM get_all_rules()";
 
-        try (Connection conn = DB_Local.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DB.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 RULE rule = new RULE();

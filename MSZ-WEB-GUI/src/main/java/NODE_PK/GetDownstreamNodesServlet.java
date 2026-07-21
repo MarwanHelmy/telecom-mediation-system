@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
-import DB_PK.DB_Local;
+import DB_PK.DB;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class GetDownstreamNodesServlet extends HttpServlet {
@@ -24,7 +24,7 @@ public class GetDownstreamNodesServlet extends HttpServlet {
         
         String sql = "SELECT id, name, ip, port FROM nodes WHERE type = 'DOWNSTREAM' AND isdeleted = false ORDER BY name";
         
-        try (Connection conn = DB_Local.getConnection();
+        try (Connection conn = DB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             

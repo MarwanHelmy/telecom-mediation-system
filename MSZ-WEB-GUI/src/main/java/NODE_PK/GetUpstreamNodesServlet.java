@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import DB_PK.DB_Local;
+import DB_PK.DB;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -25,7 +25,7 @@ public class GetUpstreamNodesServlet extends HttpServlet {
         
         String sql = "SELECT id, name, ip, port FROM nodes WHERE type = 'UPSTREAM' AND isdeleted = false ORDER BY name";
         
-        try (Connection conn = DB_Local.getConnection();
+        try (Connection conn = DB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             

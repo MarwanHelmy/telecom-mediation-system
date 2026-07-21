@@ -1,6 +1,6 @@
 package NODE_PK;
 
-import DB_PK.DB_Local;
+import DB_PK.DB;
 import DOCKER_PK.DOCKER_MANAGER;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class SaveNodeServlet extends HttpServlet {
 
         try {
 
-            con = DB_Local.getConnection();
+            con = DB.getConnection();
 
             String nodeId
                     = request.getParameter("nodeId");

@@ -1,6 +1,6 @@
 package DOCKER_PK;
 
-import DB_PK.DB_Local;
+import DB_PK.DB;
 import NODE_PK.NODE;
 
 import jakarta.servlet.ServletException;
@@ -23,7 +23,7 @@ public class ToggleDockerContainerServlet extends HttpServlet
 
         try
         (
-            Connection con = DB_Local.getConnection()
+            Connection con = DB.getConnection()
         )
         {
             int nodeId =

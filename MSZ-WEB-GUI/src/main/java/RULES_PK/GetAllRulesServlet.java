@@ -11,7 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import DB_PK.DB_Local;
+import DB_PK.DB;
 
 public class GetAllRulesServlet extends HttpServlet {
     
@@ -24,7 +24,7 @@ public class GetAllRulesServlet extends HttpServlet {
         
         String sql = "SELECT id, source_node_id, destination_node_id, is_active, created_at FROM routing_rules ORDER BY id";
         
-        try (Connection conn = DB_Local.getConnection();
+        try (Connection conn = DB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             
