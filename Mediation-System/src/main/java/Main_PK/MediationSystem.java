@@ -20,7 +20,9 @@ public class MediationSystem {
                 System.out.println("══════════════════════════════════════════════════════════════════════════════════════════════════════");
                 System.out.println("[MEDIATION ⚙️ ]  START MEDIATION CYCLE 🔄 ( " + Cycle + " ) ");
                 System.out.println("══════════════════════════════════════════════════════════════════════════════════════════════════════");
-
+                
+                up_stream_nodes = NODES_UP_STREAM.GET_NODES();
+                
                 for (NODE node : up_stream_nodes) {
 
                     System.out.println("══════════════════════════════════════════════════════════════════════════════════════════════════════");
