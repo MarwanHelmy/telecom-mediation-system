@@ -85,16 +85,17 @@ public class MediationSystem {
                         System.out.println("------------------------------------------------------------------------------------------------------");
                         
                         // MEDIATION FILTER
-                        // Validate CDR duration column using the parser package
-                        boolean isValid = CDR_Parser.is_valid_cdr(downloadedFile);
+                        File filteredFile = CDR_Parser.filterValidRecords(downloadedFile);
 
-                        if (!isValid) {
-                            System.out.println("[MEDIATION ⚙️  ] FILE ' " + file + " ' HAS (0) DURATION OR INVALID. SKIPPING UPLOAD. 🚫");
+                        if (filteredFile == null) {
+                            System.out.println("[MEDIATION ⚙️  ] FILE ' " + file + " ' CONTAINS NO VALID RECORDS AFTER FILTERING. SKIPPING UPLOAD. 🚫");
                             System.out.println("------------------------------------------------------------------------------------------------------");
                         } 
                         else 
                         {
                             // SEND TO DOWNSTREAM
+                            System.out.println("[MEDIATION ⚙️  ] FILE ' " + file + " ' HAS VALID RECORDS. PROCEEDING TO ROUTE. ✅");
+                            System.out.println("------------------------------------------------------------------------------------------------------");
                             // Fetch active target downstream destinations via database routing manager
                             List<NODE> downstream_nodes = ROUTING_MANAGER.get_target_downstream_nodes(node.getNODE_ID());
                             
@@ -110,7 +111,7 @@ public class MediationSystem {
                                     System.out.println("------------------------------------------------------------------------------------------------------");
                                     if (targetNode.connect() && targetNode.open_channel() && targetNode.change_directory()) 
                                     {
-                                        boolean uploaded = targetNode.upload_file(downloadedFile);
+                                        boolean uploaded = targetNode.upload_file(filteredFile);
                                         if (uploaded) 
                                         {
                                             System.out.println("[NODE      📡 ] [" + targetNode.getNODE_NAME() + "] SUCCESS RECEIVED FILE ' " + file + " '  ✅");
@@ -127,6 +128,13 @@ public class MediationSystem {
                                     }
                                     targetNode.disconnect();
                                 }
+                            }
+
+                            // Delete the temporary filtered file
+                            try {
+                                Files.deleteIfExists(filteredFile.toPath());
+                            } catch (Exception e) {
+                                System.out.println(" FAILED TO DELETE TEMP FILTERED FILE : " + e.getMessage());
                             }
                         }
 
