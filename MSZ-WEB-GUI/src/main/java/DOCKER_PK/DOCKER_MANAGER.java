@@ -12,6 +12,18 @@ public class DOCKER_MANAGER {
     private static final Logger LOGGER
             = Logger.getLogger(DOCKER_MANAGER.class.getName());
 
+    public static String getTemplatePath(String subType) {
+        if (subType == null) subType = "MSC";
+        switch (subType.toUpperCase()) {
+            case "SMSC":
+                return "/tmp/upstream-node-image/smsc-cdr-generator.sh";
+            case "PGW":
+                return "/tmp/upstream-node-image/pgw-cdr-generator.sh";
+            case "MSC":
+            default:
+                return "/tmp/upstream-node-image/cdr-generator.sh";
+        }
+    }
     // =========================================================
     // FORMAT CONTAINER NAME
     // =========================================================
@@ -276,6 +288,10 @@ public class DOCKER_MANAGER {
                 command.add(
                         "GENERATION_INTERVAL=10"
                 );
+                String scriptTemplate = getTemplatePath(node.getNODE_SUBTYPE());
+
+                command.add("-v");
+                command.add(scriptTemplate + ":/cdr-generator.sh:ro");
             }
 
             command.add(imageName);
