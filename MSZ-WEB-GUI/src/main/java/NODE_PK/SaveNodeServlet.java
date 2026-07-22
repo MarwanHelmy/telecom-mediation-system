@@ -56,6 +56,14 @@ public class SaveNodeServlet extends HttpServlet {
             String nodeStatus
                     = request.getParameter("nodeStatus");
 
+            String nodeSubtype
+                    = request.getParameter("nodeSubtype");
+
+            if (nodeSubtype == null || nodeSubtype.trim().isEmpty()) {
+
+                nodeSubtype = "MSC";
+            }
+
             String nodeSource = "";
             String nodeArchive = "";
 
@@ -173,6 +181,8 @@ public class SaveNodeServlet extends HttpServlet {
             node.setARCHIVE_DIRECTORY(nodeArchive);
 
             node.setNODE_STATUS(NODE_STATUS);
+
+            node.setNODE_SUBTYPE(nodeSubtype);
 
             // =====================================================
             // ADD NODE

@@ -22,6 +22,7 @@ public class NODE {
     private String SOURCE_DIRECTORY;
     private String ARCHIVE_DIRECTORY;
     private Boolean NODE_STATUS;
+    private String NODE_SUBTYPE;
 
     //============= GETTERS ============================
     public int getNODE_ID() {
@@ -54,6 +55,10 @@ public class NODE {
 
     public String getNODE_TYPE() {
         return NODE_TYPE;
+    }
+
+    public String getNODE_SUBTYPE() {
+        return NODE_SUBTYPE;
     }
 
     public String getSOURCE_DIRECTORY() {
@@ -99,6 +104,10 @@ public class NODE {
 
     public void setNODE_TYPE(String NODE_TYPE) {
         this.NODE_TYPE = NODE_TYPE;
+    }
+
+    public void setNODE_SUBTYPE(String NODE_SUBTYPE) {
+        this.NODE_SUBTYPE = NODE_SUBTYPE;
     }
 
     public void setSOURCE_DIRECTORY(String SOURCE_DIRECTORY) {
@@ -180,6 +189,8 @@ public class NODE {
                         node_status
                 );
 
+                node.setNODE_SUBTYPE(rs.getString("subtype"));
+
                 nodes.add(node);
             }
             rs.close();
@@ -194,7 +205,7 @@ public class NODE {
         int node_id = 0;
 
         try {
-            String sql = "SELECT add_node(?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "SELECT add_node(?,?,?,?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement ps = con.prepareStatement(sql);
 
@@ -209,6 +220,7 @@ public class NODE {
             ps.setString(9, node.getSOURCE_DIRECTORY());
             ps.setString(10, node.getARCHIVE_DIRECTORY());
             ps.setBoolean(11, node.NODE_STATUS);
+            ps.setString(12, node.getNODE_SUBTYPE());
 
             ResultSet rs = ps.executeQuery();
 
@@ -270,6 +282,7 @@ public class NODE {
                 node.setSOURCE_DIRECTORY(rs.getString("data_path"));
                 node.setARCHIVE_DIRECTORY(rs.getString("archive_path"));
                 node.NODE_AUTH = rs.getString("auth_type");
+                node.setNODE_SUBTYPE(rs.getString("subtype"));
             }
 
             rs.close();
@@ -284,7 +297,7 @@ public class NODE {
         boolean updated = false;
 
         try {
-            String sql = "SELECT update_node_by_id(?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "SELECT update_node_by_id(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement ps = con.prepareStatement(sql);
 
@@ -300,6 +313,7 @@ public class NODE {
             ps.setString(10, node.getSOURCE_DIRECTORY());
             ps.setString(11, node.getARCHIVE_DIRECTORY());
             ps.setBoolean(12, node.getNODE_STATUS());
+            ps.setString(13, node.getNODE_SUBTYPE());
 
             ResultSet rs = ps.executeQuery();
 
@@ -445,6 +459,10 @@ public class NODE {
 
                 node.setNODE_STATUS(
                         rs.getBoolean("isactive")
+                );
+
+                node.setNODE_SUBTYPE(
+                        rs.getString("subtype")
                 );
 
                 rs.close();
