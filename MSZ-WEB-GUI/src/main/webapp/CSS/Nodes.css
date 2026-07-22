@@ -770,6 +770,36 @@ body::before {
     background: rgba(255, 68, 68, 0.05);
 }
 
+.subtype-select {
+    padding: 14px 18px;
+    border: 2px solid rgba(5, 158, 195, 0.2);
+    border-radius: 24px;
+    font-size: 14px;
+    transition: all 0.3s;
+    background: #F9FCFE;
+    color: var(--deep-teal);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23059EC3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    padding-right: 44px;
+}
+
+.subtype-select:focus {
+    outline: none;
+    border-color: var(--bright-cyan);
+    box-shadow: 0 0 0 4px rgba(5, 158, 195, 0.1);
+}
+
+.subtype-hint {
+    color: var(--deep-teal);
+    opacity: 0.6;
+    font-size: 11px;
+    margin-top: 2px;
+}
+
 .error-message {
     color: var(--error);
     font-size: 11px;

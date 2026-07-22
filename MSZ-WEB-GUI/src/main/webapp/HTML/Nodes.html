@@ -123,6 +123,17 @@
                                 <div class="error-message" id="nodeUsernameError">Username is required</div>
                             </div>
                         </div>
+                        <div class="form-row" id="subtypeRow">
+                            <div class="form-group">
+                                <label><i class="ti ti-affiliate"></i> CDR Type <span class="required">*</span></label>
+                                <select id="nodeSubtype" class="subtype-select">
+                                    <option value="MSC">MSC — Voice CDR</option>
+                                    <option value="SMSC">SMSC — SMS CDR</option>
+                                    <option value="PGW">PGW — Data CDR</option>
+                                </select>
+                                <small class="subtype-hint">Selects which CDR generator script the upstream node runs.</small>
+                            </div>
+                        </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label><i class="ti ti-lock"></i> Password <span class="required">*</span></label>

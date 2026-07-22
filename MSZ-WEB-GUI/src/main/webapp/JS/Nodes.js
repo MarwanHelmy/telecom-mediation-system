@@ -19,11 +19,21 @@ const nodeUsernameField = document.getElementById('nodeUsername');
 const nodePasswordField = document.getElementById('nodePassword');
 const nodeStatusCheckbox = document.getElementById('nodeStatus');
 const statusLabel = document.getElementById('statusLabel');
+const nodeSubtypeField = document.getElementById('nodeSubtype');
+const subtypeRow = document.getElementById('subtypeRow');
 
 const protocolRadios = document.querySelectorAll('input[name="protocol"]');
 const typeRadios = document.querySelectorAll('input[name="nodeType"]');
 
 let currentDeleteId = null;
+
+// Show the CDR type dropdown only for UPSTREAM nodes (CDR producers)
+function toggleSubtypeRow() {
+    if (!subtypeRow) {
+        return;
+    }
+    subtypeRow.style.display = getSelectedType() === 'UPSTREAM' ? '' : 'none';
+}
 
 function getSelectedProtocol() {
     let selected = 'SFTP';
@@ -193,6 +203,7 @@ async function loadNodesFromJSON() {
                 NODE_PORT: node.NODE_PORT || node.port,
                 NODE_PROTOCOL: node.NODE_PROTOCOL || node.protocol || 'SFTP',
                 NODE_TYPE: node.NODE_TYPE || node.type || 'UPSTREAM',
+                NODE_SUBTYPE: node.NODE_SUBTYPE || node.subtype || 'MSC',
                 NODE_USER_NAME: node.NODE_USER_NAME || node.username,
                 NODE_PASSWORD: node.NODE_PASSWORD || node.password,
                 NODE_STATUS: node.NODE_STATUS ?? node.isactive ?? false
@@ -305,6 +316,7 @@ async function saveNodeToServlet(nodeData, isEdit, nodeId) {
         formData.append('nodeUserName', nodeData.nodeUserName);
         formData.append('nodePassword', nodeData.nodePassword);
         formData.append('nodeStatus', nodeData.status);
+        formData.append('nodeSubtype', nodeData.nodeSubtype || 'MSC');
         const response = await fetch(url, {
             method: 'POST',
             body: formData,
@@ -432,6 +444,10 @@ function openAddModal() {
     statusLabel.className = 'status-label active';
     document.querySelector('input[name="protocol"][value="SFTP"]').checked = true;
     document.querySelector('input[name="nodeType"][value="UPSTREAM"]').checked = true;
+    if (nodeSubtypeField) {
+        nodeSubtypeField.value = 'MSC';
+    }
+    toggleSubtypeRow();
     nodePasswordField.type = 'password';
     const icon = document.querySelector('#togglePassword i');
     if (icon) {
@@ -468,6 +484,10 @@ window.editNode = function (id) {
     if (typeRadio) {
         typeRadio.checked = true;
     }
+    if (nodeSubtypeField) {
+        nodeSubtypeField.value = (node.NODE_SUBTYPE || 'MSC').toUpperCase();
+    }
+    toggleSubtypeRow();
     nodePasswordField.type = 'password';
     const icon = document.querySelector('#togglePassword i');
     if (icon) {
@@ -504,6 +524,7 @@ nodeForm.addEventListener('submit', async (e) => {
         nodePort: parseInt(nodePortField.value),
         nodeProtocol: getSelectedProtocol(),
         nodeType: getSelectedType(),
+        nodeSubtype: nodeSubtypeField ? nodeSubtypeField.value : 'MSC',
         nodeUserName: nodeUsernameField.value.trim(),
         nodePassword: nodePasswordField.value,
         status: nodeStatusCheckbox.checked ? true : false
@@ -551,6 +572,9 @@ nodeStatusCheckbox.addEventListener('change', () => {
 });
 
 addNodeBtn.addEventListener('click', openAddModal);
+typeRadios.forEach(radio => {
+    radio.addEventListener('change', toggleSubtypeRow);
+});
 searchInput.addEventListener('input', (e) => {
     renderTable(e.target.value);
 });
